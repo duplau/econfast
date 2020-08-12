@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>EconFast search engine (by the Fintech-Innovation Hub)</title>
+  <meta name="description" content="EconFast search engine">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" rel="stylesheet" type="text/css" />
+
+<!--   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
+ -->
+  <link href="https://cdn.muicss.com/mui-0.9.20/css/mui.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=EB+Garamond:400,700|Open+Sans" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet" />
+</head>
+<body>
+<div class="app-container" id="vue-instance"
+tabindex="0" @keydown.left="prevPubli()" @keydown.right="nextPubli()" @keydown.esc="closePubliModal()"
+>
+    <div class="mui-panel">
+      <div class="mui-textfield">
+        <label>Requête</label>
+        <input v-model="searchTerm" type="text" @input="onChange" v-on:keyup="onSearchInput()" @keydown.down="onArrowDown" @keydown.up="onArrowUp" @keydown.enter="onEnter">
+        <ul v-show="isOpen" class="autocomplete-results">
+          <li v-for="(suggestion, i) in suggestions" :key="i" @click="pickSuggestion(suggestion)" class="autocomplete-result" :class="{ 'is-active': i === arrow_count }">
+            <div class="box">
+              <img v-bind:src="suggestion.icon_url" height="24px"/>
+              <div class="mui--text-caption"> {{ suggestion.label }}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Search Metadata Card -->
+    <div class="mui-panel">
+      <div class="mui--text-headline">{{ numHits }} résultats</div>
+      <div class="mui--text-subhead">Résultats {{ searchOffset }} à {{ searchOffset + 9 }}</div>
+    </div>
+
+    <!-- Top Pagination Card -->
+    <div class="mui-panel pagination-panel">
+        <button class="mui-btn mui-btn--flat" v-on:click="prevResultsPage()">Prev Page</button>
+        <button class="mui-btn mui-btn--flat" v-on:click="nextResultsPage()">Next Page</button>
+    </div>
+
+    <!-- Search Results Card List -->
+    <div class="search-results" ref="searchResults">
+      <div class="mui-panel" v-for="hit in searchResults"  v-on:click="showPubliModal(hit)">
+        <!-- <div class="mui--text-title" v-html="hit.highlight.text[0]"></div>
+         -->
+        <div class="mui--text-title">{{ hit._source.full_name }}</div>
+        <div class="mui-divider"></div>
+        <div v-if="!!hit._source.current_institution" class="headline-row ">
+          <div class="mui--text-subhead">Affiliation: {{ hit._source.current_institution }}</div>
+          <div v-if="hit._source.logo_urls"><img v-bind:src="hit._source.logo_urls[0]"/></div>
+        </div>
+        <div v-if="!!hit._source['specialties'].length > 0" class="mui--text-body2">Spécialités : {{ hit._source["specialties"].slice(0, 3).join("; ") }}</div>
+      </div>
+    </div>
+
+    <!-- Bottom Pagination Card -->
+    <div class="mui-panel pagination-panel">
+        <button class="mui-btn mui-btn--flat" v-on:click="prevResultsPage()">Prev Page</button>
+        <button class="mui-btn mui-btn--flat" v-on:click="nextResultsPage()">Next Page</button>
+    </div>
+
+    <!-- Publication Modal Window -->
+    <div v-if="selectedAuthor" ref="publiModal" class="publi-modal">
+      <div class="publi-container">
+          <div class="headline-row ">
+            <div class="mui--text-headline">Publications de {{ selectedAuthor.full_name }}</div>
+            <div class="mui--text-headline" align="right">{{ idx + 1 }}/{{ pub_count }}</div>
+            <div v-if="selectedAuthor.pic_urls"><img v-bind:src="selectedAuthor.pic_urls[0]"/></div>
+          </div>
+        <br/>
+        <div class="mui-divider"></div>
+        <div v-if="currentPubli">
+          <br/>
+          <div class="title-row">
+            <a class="mui--text-title" align="center" v-bind:href="currentPubli._source.url" target="_blank"><strong>{{ currentPubli._source.title }}</strong></a>
+          </div>
+          <br/>
+          <div v-if="!!currentPubli._source.creation_date" class="mui--text-body2"><strong>Date de publication :</strong> {{ currentPubli._source.creation_date }}</div>
+          <div v-if="!!currentPubli._source['jel-labels']" class="mui--text-body2"><strong>Catégories : </strong>{{ currentPubli._source["jel-labels"].slice(0, 3).join("; ") }}</div>
+          <div v-if="!!currentPubli.coauthors" class="mui--text-body2"><strong>Co-auteurs : </strong> {{ currentPubli.coauthors }}</div>
+        </div>
+        <div class="mui--text-body1">
+          <div v-if="currentPubli">
+            <div class="mui--text-body2">
+              <div align="center"><strong>Résumé</strong></div>
+              <div v-html="currentPubli._source.abstract"/>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="mui-btn mui-btn--flat" v-bind:disabled="idx < 1" v-on:click="prevPubli()">Publi précédente</button>
+        <button class="mui-btn mui-btn--flat" v-on:click="closePubliModal()">Fermer</button>
+        <button class="mui-btn mui-btn--flat" v-bind:disabled="idx > pub_count-2" v-on:click="nextPubli()">Publi suivante</button>
+      </div>
+    </div>
+
+</div>
+<script src="https://cdn.muicss.com/mui-0.9.28/js/mui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

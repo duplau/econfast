@@ -1,0 +1,17 @@
+{
+  "name": "econ-fast",
+  "version": "0.0.1",
+  "description": "Source code for the econ-fast hackathon project by the Fintech-Innovation Hub",
+  "scripts": {
+    "start": "node --inspect=0.0.0.0:9229 server/app.js"
+  },
+  "author": "laurent.dupont@acpr.banque-france.fr",
+  "dependencies": {
+    "elasticsearch": "13.3.1",
+    "joi": "13.0.1",
+    "koa": "2.4.1",
+    "koa-joi-validate": "0.5.1",
+    "koa-router": "7.2.1",
+    "vue-suggestion": "^1.1.0"
+  }
+}

@@ -1,0 +1,3 @@
+#!/bin/sh
+python3 index_publis.py  
+python3 index_authors.py  

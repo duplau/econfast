@@ -1,0 +1,859 @@
+|General Economics and Teaching| A00 
+|General Economics: General|A10 
+|Role of Economics; Role of Economists; Market for Economists|A11 
+|Relation of Economics to Other Disciplines|A12 
+|Relation of Economics to Social Values|A13 
+|Sociology of Economics|A14 
+|General Economics: Other|A19 
+|Economic Education and Teaching of Economics: General|A20 
+|Economic Education and Teaching of Economics: Pre-college|A21 
+|Economic Education and Teaching of Economics: Undergraduate|A22 
+|Economic Education and Teaching of Economics: Graduate|A23 
+|Economic Education and Teaching of Economics: Other|A29 
+|Collective Works: General|A30 
+|Collected Writings of Individuals|A31 
+|Collective Volumes|A32 
+|Handbooks|A33 
+|Collective Works: Other|A39 
+|History of Economic Thought, Methodology, and Heterodox Approaches|B00 
+|History of Economic Thought through 1925: General|B10 
+|History of Economic Thought: Preclassical (Ancient, Medieval, Mercantilist, Physiocratic)|B11 
+|History of Economic Thought: Classical (includes Adam Smith)|B12 
+|History of Economic Thought: Neoclassical through 1925 (Austrian, Marshallian, Walrasian, Wicksellian)|B13 
+|History of Economic Thought through 1925: Socialist; Marxist|B14 
+|History of Economic Thought through 1925: Historical; Institutional; Evolutionary|B15 
+|History of Economic Thought through 1925: Quantitative and Mathematical|B16 
+|History of Economic Thought through 1925: International Trade and Finance|B17 
+|History of Economic Thought through 1925: Other|B19 
+|History of Economic Thought since 1925: General|B20 
+|History of Economic Thought: Microeconomics|B21 
+|History of Economic Thought: Macroeconomics|B22 
+|History of Economic Thought: Quantitative and Mathematical|B23 
+|History of Economic Thought since 1925: Socialist; Marxist; Sraffian|B24 
+|History of Economic Thought since 1925: Historical; Institutional; Evolutionary; Austrian; Stockholm School|B25 
+|History of Economic Thought since 1925: Financial Economics|B26 
+|History of Economic Thought since 1925: International Trade and Finance|B27 
+|History of Economic Thought since 1925: Other|B29 
+|History of Economic Thought: Individuals: General|B30 
+|History of Economic Thought: Individuals|B31 
+|Obituaries|B32 
+|Economic Methodology: General|B40 
+|Economic Methodology|B41 
+|Economic Methodology: Other|B49 
+|Current Heterodox Approaches: General|B50 
+|Current Heterodox Approaches: Socialist; Marxian; Sraffian|B51 
+|Current Heterodox Approaches: Historical; Institutional; Evolutionary; Modern Monetary Theory†|B52 
+|Current Heterodox Approaches: Austrian|B53 
+|Feminist Economics|B54 
+|Social Economics|B55 
+|Current Heterodox Approaches: Other|B59 
+|Mathematical and Quantitative Methods: General|C00 
+|Econometrics|C01 
+|Mathematical Methods|C02 
+|Econometric and Statistical Methods and Methodology: General|C10 
+|Bayesian Analysis: General|C11 
+|Hypothesis Testing: General|C12 
+|Estimation: General|C13 
+|Semiparametric and Nonparametric Methods: General|C14 
+|Statistical Simulation Methods: General|C15 
+|Methodological Issues: General|C18 
+|Econometric and Statistical Methods: Other|C19 
+|Single Equation Models; Single Variables: General|C20 
+|Single Equation Models; Single Variables: Cross-Sectional Models; Spatial Models; Treatment Effect Models; Quantile Regressions|C21 
+|Single Equation Models; Single Variables: Time-Series Models; Dynamic Quantile Regressions; Dynamic Treatment Effect Models; Diffusion Processes|C22 
+|Single Equation Models; Single Variables: Panel Data Models; Spatio-temporal Models|C23 
+|Single Equation Models; Single Variables: Truncated and Censored Models; Switching Regression Models; Threshold Regression Models|C24 
+|Single Equation Models; Single Variables: Discrete Regression and Qualitative Choice Models; Discrete Regressors; Proportions; Probabilities|C25 
+|Single Equation Models: Single Variables: Instrumental Variables (IV) Estimation|C26 
+|Single Equation Models; Single Variables: Other|C29 
+|Multiple or Simultaneous Equation Models; Multiple Variables: General|C30 
+|Multiple or Simultaneous Equation Models: Cross-Sectional Models; Spatial Models; Treatment Effect Models; Quantile Regressions; Social Interaction Models|C31 
+|Multiple or Simultaneous Equation Models: Time-Series Models; Dynamic Quantile Regressions; Dynamic Treatment Effect Models; Diffusion Processes; State Space Models|C32 
+|Multiple or Simultaneous Equation Models: Panel Data Models; Spatio-temporal Models|C33 
+|Multiple or Simultaneous Equation Models: Truncated and Censored Models; Switching Regression Models|C34 
+|Multiple or Simultaneous Equation Models: Discrete Regression and Qualitative Choice Models; Discrete Regressors; Proportions|C35 
+|Multiple or Simultaneous Equation Models: Instrumental Variables (IV) Estimation|C36 
+|Multiple or Simultaneous Equation Models: Classification Methods; Cluster Analysis; Principal Components; Factor Models|C38 
+|Multiple or Simultaneous Equation Models; Multiple Variables: Other|C39 
+|Econometric and Statistical Methods: Special Topics: General|C40 
+|Duration Analysis; Optimal Timing Strategies|C41 
+|Classification Discontinued 2008. See C83.|C42 
+|Index Numbers and Aggregation; Leading indicators|C43 
+|Operations Research; Statistical Decision Theory|C44 
+|Neural Networks and Related Topics|C45 
+|Specific Distributions; Specific Statistics|C46 
+|Econometric and Statistical Methods: Special Topics: Other|C49 
+|Econometric Modeling: General|C50 
+|Model Construction and Estimation|C51 
+|Model Evaluation, Validation, and Selection|C52 
+|Forecasting Models; Simulation Methods|C53 
+|Quantitative Policy Modeling|C54 
+|Large Data Sets: Modeling and Analysis|C55 
+|Econometrics of Games and Auctions|C57 
+|Financial Econometrics|C58 
+|Econometric Modeling: Other|C59 
+|Mathematical Methods; Programming Models; Mathematical and Simulation Modeling: General|C60 
+|Optimization Techniques; Programming Models; Dynamic Analysis|C61 
+|Existence and Stability Conditions of Equilibrium|C62 
+|Computational Techniques; Simulation Modeling|C63 
+|Miscellaneous Mathematical Tools|C65 
+|Input-Output Models|C67 
+|Computable General Equilibrium Models|C68 
+|Mathematical Methods; Programming Models; Mathematical and Simulation Modeling: Other|C69 
+|Game Theory and Bargaining Theory: General|C70 
+|Cooperative Games|C71 
+|Noncooperative Games|C72 
+|Stochastic and Dynamic Games; Evolutionary Games; Repeated Games|C73 
+|Bargaining Theory; Matching Theory|C78 
+|Game Theory and Bargaining Theory: Other|C79 
+|Data Collection and Data Estimation Methodology; Computer Programs: General|C80 
+|Methodology for Collecting, Estimating, and Organizing Microeconomic Data; Data Access|C81 
+|Methodology for Collecting, Estimating, and Organizing Macroeconomic Data; Data Access|C82 
+|Survey Methods; Sampling Methods|C83 
+|Econometric Software|C87 
+|Data Collection and Data Estimation Methodology; Computer Programs: Other Computer Software|C88 
+|Data Collection and Data Estimation Methodology; Computer Programs: Other|C89 
+|Design of Experiments: General|C90 
+|Design of Experiments: Laboratory, Individual|C91 
+|Design of Experiments: Laboratory, Group Behavior|C92 
+|Field Experiments|C93 
+|Design of Experiments: Other|C99 
+|Microeconomics: General|D00 
+|Microeconomic Behavior: Underlying Principles|D01 
+|Institutions: Design, Formation, Operations, and Impact|D02 
+|Microeconomic Policy: Formulation, Implementation, and Evaluation|D04 
+|Household Behavior: General|D10 
+|Consumer Economics: Theory|D11 
+|Consumer Economics: Empirical Analysis|D12 
+|Household Production and Intrahousehold Allocation|D13 
+|Household Saving; Personal Finance|D14 
+|Intertemporal Household Choice; Life Cycle Models and Saving|D15 
+|Collaborative Consumption|D16 
+|Consumer Protection|D18 
+|Household Behavior and Family Economics: Other|D19 
+|Production and Organizations: General|D20 
+|Firm Behavior: Theory|D21 
+|Firm Behavior: Empirical Analysis|D22 
+|Organizational Behavior; Transaction Costs; Property Rights|D23 
+|Production; Cost; Capital; Capital, Total Factor, and Multifactor Productivity; Capacity|D24 
+|Intertemporal Firm Choice: Investment, Capacity, and Financing|D25 
+|Crowd-Based Firms|D26 
+|Production and Organizations: Other|D29 
+|Distribution: General|D30 
+|Personal Income, Wealth, and Their Distributions|D31 
+|Factor Income Distribution|D33 
+|Distribution: Other|D39 
+|Market Structure, Pricing, and Design: General|D40 
+|Market Structure, Pricing, and Design: Perfect Competition|D41 
+|Market Structure, Pricing, and Design: Monopoly|D42 
+|Market Structure, Pricing, and Design: Oligopoly and Other Forms of Market Imperfection|D43 
+|Auctions|D44 
+|Rationing; Licensing|D45 
+|Value Theory|D46 
+|Market Design|D47 
+|Market Structure and Pricing: Other|D49 
+|General Equilibrium and Disequilibrium: General|D50 
+|Exchange and Production Economies|D51 
+|Incomplete Markets|D52 
+|General Equilibrium and Disequilibrium: Financial Markets|D53 
+|General Equilibrium and Disequilibrium: Input-Output Tables and Analysis|D57 
+|Computable and Other Applied General Equilibrium Models|D58 
+|General Equilibrium and Disequilibrium: Other|D59 
+|Welfare Economics: General|D60 
+|Allocative Efficiency; Cost-Benefit Analysis|D61 
+|Externalities|D62 
+|Equity, Justice, Inequality, and Other Normative Criteria and Measurement|D63 
+|Altruism; Philanthropy; Intergenerational Transfers|D64 
+|Welfare Economics: Other|D69 
+|Analysis of Collective Decision-Making: General|D70 
+|Social Choice; Clubs; Committees; Associations|D71 
+|Political Processes: Rent-seeking, Lobbying, Elections, Legislatures, and Voting Behavior|D72 
+|Bureaucracy; Administrative Processes in Public Organizations; Corruption|D73 
+|Conflict; Conflict Resolution; Alliances; Revolutions|D74 
+|Positive Analysis of Policy Formulation and Implementation|D78 
+|Analysis of Collective Decision-Making: Other|D79 
+|Information, Knowledge, and Uncertainty: General|D80 
+|Criteria for Decision-Making under Risk and Uncertainty|D81 
+|Asymmetric and Private Information; Mechanism Design|D82 
+|Search; Learning; Information and Knowledge; Communication; Belief; Unawareness|D83 
+|Expectations; Speculations|D84 
+|Network Formation and Analysis: Theory|D85 
+|Economics of Contract: Theory|D86 
+|Neuroeconomics|D87 
+|Information and Uncertainty: Other|D89 
+|Micro-Based Behavioral Economics: General|D90 
+|Micro-Based Behavioral Economics: Role and Effects of Psychological, Emotional, Social, and Cognitive Factors on Decision Making|D91 
+|Macroeconomics and Monetary Economics: General|E00 
+|Measurement and Data on National Income and Product Accounts and Wealth; Environmental Accounts|E01 
+|Institutions and the Macroeconomy|E02 
+|General Aggregative Models: General|E10 
+|General Aggregative Models: Marxian; Sraffian; Kaleckian|E11 
+|General Aggregative Models: Keynes; Keynesian; Post-Keynesian; Modern Monetary Theory†|E12 
+|General Aggregative Models: Neoclassical|E13 
+|Austrian; Evolutionary; Institutional|E14 
+|General Aggregative Models: Social Accounting Matrix|E16 
+|General Aggregative Models: Forecasting and Simulation: Models and Applications|E17 
+|General Aggregative Models: Other|E19 
+|Consumption, Saving, Production, Investment, Labor Markets, and Informal Economy: General (includes Measurement and Data)|E20 
+|Macroeconomics: Consumption; Saving; Wealth|E21 
+|Investment; Capital; Intangible Capital; Capacity|E22 
+|Macroeconomics: Production|E23 
+|Employment; Unemployment; Wages; Intergenerational Income Distribution; Aggregate Human Capital; Aggregate Labor Productivity|E24 
+|Aggregate Factor Income Distribution|E25 
+|Informal Economy; Underground Economy|E26 
+|Macroeconomics: Consumption, Saving, Production, Employment, and Investment: Forecasting and Simulation: Models and Applications|E27 
+|Consumption, Saving, Production, Investment, Labor Markets, and Informal Economy: Other|E29 
+|Prices, Business Fluctuations, and Cycles: General (includes Measurement and Data)|E30 
+|Price Level; Inflation; Deflation|E31 
+|Business Fluctuations; Cycles|E32 
+|Prices, Business Fluctuations, and Cycles: Forecasting and Simulation: Models and Applications|E37 
+|Prices, Business Fluctuations, and Cycles: Other|E39 
+|Money and Interest Rates: General|E40 
+|Demand for Money|E41 
+|Monetary Systems; Standards; Regimes; Government and the Monetary System; Payment Systems|E42 
+|Interest Rates: Determination, Term Structure, and Effects|E43 
+|Financial Markets and the Macroeconomy|E44 
+|Money and Interest Rates: Forecasting and Simulation: Models and Applications|E47 
+|Money and Interest Rates: Other|E49 
+|Monetary Policy, Central Banking, and the Supply of Money and Credit: General|E50 
+|Money Supply; Credit; Money Multipliers|E51 
+|Monetary Policy|E52 
+|Central Banks and Their Policies|E58 
+|Monetary Policy, Central Banking, and the Supply of Money and Credit: Other|E59 
+|Macroeconomic Policy, Macroeconomic Aspects of Public Finance, and General Outlook: General|E60 
+|Policy Objectives; Policy Designs and Consistency; Policy Coordination|E61 
+|Fiscal Policy|E62 
+|Comparative or Joint Analysis of Fiscal and Monetary Policy; Stabilization; Treasury Policy|E63 
+|Incomes Policy; Price Policy|E64 
+|Studies of Particular Policy Episodes|E65 
+|General Outlook and Conditions|E66 
+|Macroeconomic Policy, Macroeconomic Aspects of Public Finance, and General Outlook: Other|E69 
+|Macro-Based Behavioral Economics: General|E70 
+|Macro-Based Behavioral Economics: Role and Effects of Psychological, Emotional, Social, and Cognitive Factors on the Macro Economy|E71 
+|International Economics: General|F00 
+|Global Outlook|F01 
+|International Economic Order and Integration|F02 
+|Trade: General|F10 
+|Neoclassical Models of Trade|F11 
+|Models of Trade with Imperfect Competition and Scale Economies; Fragmentation|F12 
+|Trade Policy; International Trade Organizations|F13 
+|Empirical Studies of Trade|F14 
+|Economic Integration|F15 
+|Trade and Labor Market Interactions|F16 
+|Trade: Forecasting and Simulation|F17 
+|Trade and Environment|F18 
+|Trade: Other|F19 
+|International Factor Movements and International Business: General|F20 
+|International Investment; Long-term Capital Movements|F21 
+|International Migration|F22 
+|Multinational Firms; International Business|F23 
+|Remittances|F24 
+|International Factor Movements: Other|F29 
+|International Finance: General|F30 
+|Foreign Exchange|F31 
+|Current Account Adjustment; Short-term Capital Movements|F32 
+|International Monetary Arrangements and Institutions|F33 
+|International Lending and Debt Problems|F34 
+|Foreign Aid|F35 
+|Financial Aspects of Economic Integration|F36 
+|International Finance Forecasting and Simulation: Models and Applications|F37 
+|International Financial Policy: Financial Transactions Tax; Capital Controls|F38 
+|International Finance: Other|F39 
+|Macroeconomic Aspects of International Trade and Finance: General|F40 
+|Open Economy Macroeconomics|F41 
+|International Policy Coordination and Transmission|F42 
+|Economic Growth of Open Economies|F43 
+|International Business Cycles|F44 
+|Macroeconomic Issues of Monetary Unions|F45 
+|Macroeconomic Aspects of International Trade and Finance: Forecasting and Simulation: Models and Applications|F47 
+|Macroeconomic Aspects of International Trade and Finance: Other|F49 
+|International Relations, National Security, and International Political Economy: General|F50 
+|International Conflicts; Negotiations; Sanctions|F51 
+|National Security; Economic Nationalism|F52 
+|International Agreements and Observance; International Organizations|F53 
+|Colonialism; Imperialism; Postcolonialism|F54 
+|International Institutional Arrangements|F55 
+|International Relations and International Political Economy: Other|F59 
+|Economic Impacts of Globalization: General|F60 
+|Economic Impacts of Globalization: Microeconomic Impacts|F61 
+|Economic Impacts of Globalization: Macroeconomic Impacts|F62 
+|Economic Impacts of Globalization: Economic Development|F63 
+|Economic Impacts of Globalization: Environment|F64 
+|Economic Impacts of Globalization: Finance|F65 
+|Economic Impacts of Globalization: Labor|F66 
+|Economic Impacts of Globalization: Policy|F68 
+|Economic Impacts of Globalization: Other|F69 
+|Financial Economics: General|G00 
+|Financial Crises|G01 
+|Asset Markets and Pricing|G10 
+|Portfolio Choice; Investment Decisions|G11 
+|Equities; Fixed Income Securities†|G12 
+|Contingent Pricing; Futures Pricing; option pricing|G13 
+|Information and Market Efficiency; Event Studies; Insider Trading|G14 
+|International Financial Markets|G15 
+|Financial Forecasting and Simulation|G17 
+|General Financial Markets: Government Policy and Regulation|G18 
+|General Financial Markets: Other|G19 
+|Financial Institutions and Services: General|G20 
+|Banks; Depository Institutions; Micro Finance Institutions; Mortgages|G21 
+|Insurance; Insurance Companies; Actuarial Studies|G22 
+|Pension Funds; Non-bank Financial Institutions; Financial Instruments; Institutional Investors|G23 
+|Investment Banking; Venture Capital; Brokerage; Ratings and Ratings Agencies|G24 
+|Financial Institutions and Services: Government Policy and Regulation|G28 
+|Financial Institutions and Services: Other|G29 
+|Corporate Finance and Governance: General|G30 
+|Capital Budgeting; Fixed Investment and Inventory Studies; Capacity|G31 
+|Financing Policy; Financial Risk and Risk Management; Capital and Ownership Structure; Value of Firms; Goodwill|G32 
+|Bankruptcy; Liquidation|G33 
+|Mergers; Acquisitions; Restructuring; Voting; Proxy Contests; Corporate Governance|G34 
+|Payout Policy|G35 
+|Corporate Finance and Governance: Government Policy and Regulation|G38 
+|Corporate Finance and Governance: Other|G39 
+|Behavioral Finance: General|G40 
+|Behavioral Finance: Role and Effects of Psychological, Emotional, Social, and Cognitive Factors on Decision Making in Financial Markets|G41 
+|Household Finance: General‡|G50 
+|Household Saving, Borrowing, Debt, and Wealth‡|G51 
+|Household Finance: Insurance‡|G52 
+|Household Finance: Financial Literacy‡|G53 
+|Household Finance: Other‡|G59 
+|Public Economics: General|H00 
+|Structure and Scope of Government: General|H10 
+|Structure, Scope, and Performance of Government|H11 
+|Crisis Management|H12 
+|Economics of Eminent Domain; Expropriation; Nationalization|H13 
+|Structure and Scope of Government: Other|H19 
+|Taxation, Subsidies, and Revenue: General|H20 
+|Taxation and Subsidies: Efficiency; Optimal Taxation|H21 
+|Taxation and Subsidies: Incidence|H22 
+|Taxation and Subsidies: Externalities; Redistributive Effects; Environmental Taxes and Subsidies|H23 
+|Personal Income and Other Nonbusiness Taxes and Subsidies; includes inheritance and gift taxes|H24 
+|Business Taxes and Subsidies including sales and value-added (VAT)|H25 
+|Tax Evasion and Avoidance|H26 
+|Taxation, Subsidies, and Revenues: Other Sources of Revenue|H27 
+|Taxation and Subsidies: Other|H29 
+|Fiscal Policies and Behavior of Economic Agents: General|H30 
+|Fiscal Policies and Behavior of Economic Agents: Household|H31 
+|Fiscal Policies and Behavior of Economic Agents: Firm|H32 
+|Fiscal Policies and Behavior of Economic Agents: Other|H39 
+|Publicly Provided Goods: General|H40 
+|Public Goods|H41 
+|Publicly Provided Private Goods|H42 
+|Project Evaluation; Social Discount Rate|H43 
+|Publicly Provided Goods: Mixed Markets|H44 
+|Publicly Provided Goods: Other|H49 
+|National Government Expenditures and Related Policies: General|H50 
+|National Government Expenditures and Health|H51 
+|National Government Expenditures and Education|H52 
+|National Government Expenditures and Welfare Programs|H53 
+|National Government Expenditures and Related Policies: Infrastructures; Other Public Investment and Capital Stock|H54 
+|Social Security and Public Pensions|H55 
+|National Security and War|H56 
+|National Government Expenditures and Related Policies: Procurement|H57 
+|National Government Expenditures and Related Policies: Other|H59 
+|National Budget, Deficit, and Debt: General|H60 
+|National Budget; Budget Systems|H61 
+|National Deficit; Surplus|H62 
+|National Debt; Debt Management; Sovereign Debt|H63 
+|Forecasts of Budgets, Deficits, and Debt|H68 
+|National Budget, Deficit, and Debt: Other|H69 
+|State and Local Government; Intergovernmental Relations: General|H70 
+|State and Local Taxation, Subsidies, and Revenue|H71 
+|State and Local Budget and Expenditures|H72 
+|State and Local Government; Intergovernmental Relations: Interjurisdictional Differentials and Their Effects|H73 
+|State and Local Borrowing|H74 
+|State and Local Government: Health; Education; Welfare; Public Pensions|H75 
+|State and Local Government: Other Expenditure Categories|H76 
+|Intergovernmental Relations; Federalism; Secession|H77 
+|State and Local Government; Intergovernmental Relations: Other|H79 
+|Public Economics: Miscellaneous Issues: General|H80 
+|Governmental Loans; Loan Guarantees; Credits; Grants; Bailouts|H81 
+|Governmental Property|H82 
+|Public Administration; Public Sector Accounting and Audits|H83 
+|Disaster Aid|H84 
+|International Fiscal Issues; International Public Goods|H87 
+|Public Economics: Miscellaneous Issues: Other|H89 
+|Health, Education, and Welfare: General|I00 
+|Health: General|I10 
+|Analysis of Health Care Markets|I11 
+|Health Behavior|I12 
+|Health Insurance, Public and Private|I13 
+|Health and Inequality|I14 
+|Health and Economic Development|I15 
+|Health: Government Policy; Regulation; Public Health|I18 
+|Health: Other|I19 
+|Education and Research Institutions: General|I20 
+|Analysis of Education|I21 
+|Educational Finance; Financial Aid|I22 
+|Higher Education; Research Institutions|I23 
+|Education and Inequality|I24 
+|Education and Economic Development|I25 
+|Returns to Education|I26 
+|Education: Government Policy|I28 
+|Education: Other|I29 
+|Welfare, Well-Being, and Poverty: General|I30 
+|General Welfare; Well-Being|I31 
+|Measurement and Analysis of Poverty|I32 
+|Welfare, Well-Being, and Poverty: Government Programs; Provision and Effects of Welfare Programs|I38 
+|Welfare, Well-Being, and Poverty: Other|I39 
+|Labor and Demographic Economics: General|J00 
+|Labor Economics: General|J01 
+|Labor Economics Policies|J08 
+|Demographic Economics: General|J10 
+|Demographic Trends, Macroeconomic Effects, and Forecasts|J11 
+|Marriage; Marital Dissolution; Family Structure; Domestic Abuse|J12 
+|Fertility; Family Planning; Child Care; Children; Youth|J13 
+|Economics of the Elderly; Economics of the Handicapped; Non-labor Market Discrimination|J14 
+|Economics of Minorities, Races, Indigenous Peoples, and Immigrants; Non-labor Discrimination|J15 
+|Economics of Gender; Non-labor Discrimination|J16 
+|Value of Life; Forgone Income|J17 
+|Demographic Economics: Public Policy|J18 
+|Demographic Economics: Other|J19 
+|Demand and Supply of Labor: General|J20 
+|Labor Force and Employment, Size, and Structure|J21 
+|Time Allocation and Labor Supply|J22 
+|Labor Demand|J23 
+|Human Capital; Skills; Occupational Choice; Labor Productivity|J24 
+|Retirement; Retirement Policies|J26 
+|Safety; Job Satisfaction; Related Public Policy|J28 
+|Time Allocation, Work Behavior, and Employment Determination: Other|J29 
+|Wages, Compensation, and Labor Costs: General|J30 
+|Wage Level and Structure; Wage Differentials|J31 
+|Nonwage Labor Costs and Benefits; Retirement Plans; Private Pensions|J32 
+|Compensation Packages; Payment Methods|J33 
+|Wages, Compensation, and Labor Costs: Public Policy|J38 
+|Wages, Compensation, and Labor Costs: Other|J39 
+|Particular Labor Markets: General|J40 
+|Labor Contracts|J41 
+|Monopsony; Segmented Labor Markets|J42 
+|Agricultural Labor Markets|J43 
+|Professional Labor Markets; Occupational Licensing|J44 
+|Public Sector Labor Markets|J45 
+|Informal Labor Markets|J46 
+|Coercive Labor Markets|J47 
+|Particular Labor Markets: Public Policy|J48 
+|Particular Labor Markets: Other|J49 
+|Labor-Management Relations, Trade Unions, and Collective Bargaining: General|J50 
+|Trade Unions: Objectives, Structure, and Effects|J51 
+|Dispute Resolution: Strikes, Arbitration, and Mediation; Collective Bargaining|J52 
+|Labor-Management Relations; Industrial Jurisprudence|J53 
+|Producer Cooperatives; Labor Managed Firms; Employee Ownership|J54 
+|Labor-Management Relations, Trade Unions, and Collective Bargaining: Public Policy|J58 
+|Labor-Management Relations, Trade Unions, and Collective Bargaining: Other|J59 
+|Mobility, Unemployment, Vacancies, and Immigrant Workers: General|J60 
+|Geographic Labor Mobility; Immigrant Workers|J61 
+|Job, Occupational, and Intergenerational Mobility; Promotion|J62 
+|Labor Turnover; Vacancies; Layoffs|J63 
+|Unemployment: Models, Duration, Incidence, and Job Search|J64 
+|Unemployment Insurance; Severance Pay; Plant Closings|J65 
+|Mobility, Unemployment, and Vacancies: Public Policy|J68 
+|Mobility, Unemployment, and Vacancies: Other|J69 
+|Labor Discrimination: General|J70 
+|Labor Discrimination|J71 
+|Labor Discrimination: Public Policy|J78 
+|Labor Discrimination: Other|J79 
+|Labor Standards: General|J80 
+|Labor Standards: Working Conditions|J81 
+|Labor Standards: Labor Force Composition|J82 
+|Labor Standards: Workers' Rights|J83 
+|Labor Standards: Public Policy|J88 
+|Labor Standards: Other|J89 
+|Law and Economics: General|K00 
+|Basic Areas of Law: General (Constitutional Law)|K10 
+|Property Law|K11 
+|Contract Law|K12 
+|Tort Law and Product Liability; Forensic Economics|K13 
+|Criminal Law|K14 
+|Civil Law; Common Law|K15 
+|Election Law|K16 
+|Basic Areas of Law: Other|K19 
+|Regulation and Business Law: General|K20 
+|Antitrust Law|K21 
+|Business and Securities Law|K22 
+|Regulated Industries and Administrative Law|K23 
+|Cyber Law|K24 
+|Real Estate Law|K25 
+|Regulation and Business Law: Other|K29 
+|Other Substantive Areas of Law: General|K30 
+|Labor Law|K31 
+|Energy, Environmental, Health, and Safety Law|K32 
+|International Law|K33 
+|Tax Law|K34 
+|Personal Bankruptcy Law|K35 
+|Family and Personal Law|K36 
+|Immigration Law|K37 
+|Human Rights Law; Gender Law|K38 
+|Other Substantive Areas of Law: Other|K39 
+|Legal Procedure, the Legal System, and Illegal Behavior: General|K40 
+|Litigation Process|K41 
+|Illegal Behavior and the Enforcement of Law|K42 
+|Legal Procedure, the Legal System, and Illegal Behavior: Other|K49 
+|Industrial Organization: General|L00 
+|Market Structure, Firm Strategy, and Market Performance: General|L10 
+|Production, Pricing, and Market Structure; Size Distribution of Firms|L11 
+|Monopoly; Monopolization Strategies|L12 
+|Oligopoly and Other Imperfect Markets|L13 
+|Transactional Relationships; Contracts and Reputation; Networks|L14 
+|Information and Product Quality; Standardization and Compatibility|L15 
+|Industrial Organization and Macroeconomics: Industrial Structure and Structural Change; Industrial Price Indices|L16 
+|Open Source Products and Markets|L17 
+|Market Structure, Firm Strategy, and Market Performance: Other|L19 
+|Firm Objectives, Organization, and Behavior: General|L20 
+|Business Objectives of the Firm|L21 
+|Firm Organization and Market Structure|L22 
+|Organization of Production|L23 
+|Contracting Out; Joint Ventures; Technology Licensing|L24 
+|Firm Performance: Size, Diversification, and Scope|L25 
+|Entrepreneurship|L26 
+|Firm Objectives, Organization, and Behavior: Other|L29 
+|Nonprofit Organizations and Public Enterprise: General|L30 
+|Nonprofit Institutions; NGOs; Social Entrepreneurship|L31 
+|Public Enterprises; Public-Private Enterprises|L32 
+|Comparison of Public and Private Enterprises and Nonprofit Institutions; Privatization; Contracting Out|L33 
+|Public Policy|L38 
+|Nonprofit Organizations and Public Enterprise: Other|L39 
+|Antitrust Issues and Policies: General|L40 
+|Monopolization; Horizontal Anticompetitive Practices|L41 
+|Vertical Restraints; Resale Price Maintenance; Quantity Discounts|L42 
+|Legal Monopolies and Regulation or Deregulation|L43 
+|Antitrust Policy and Public Enterprises, Nonprofit Institutions, and Professional Organizations|L44 
+|Antitrust Policy: Other|L49 
+|Regulation and Industrial Policy: General|L50 
+|Economics of Regulation|L51 
+|Industrial Policy; Sectoral Planning Methods|L52 
+|Enterprise Policy|L53 
+|Regulation and Industrial Policy: Other|L59 
+|Industry Studies: Manufacturing: General|L60 
+|Metals and Metal Products; Cement; Glass; Ceramics|L61 
+|Automobiles; Other Transportation Equipment; Related Parts and Equipment|L62 
+|Microelectronics; Computers; Communications Equipment|L63 
+|Other Machinery; Business Equipment; Armaments|L64 
+|Chemicals; Rubber; Drugs; Biotechnology; Plastics|L65 
+|Food; Beverages; Cosmetics; Tobacco; Wine and Spirits|L66 
+|Other Consumer Nondurables: Clothing, Textiles, Shoes, and Leather Goods; Household Goods; Sports Equipment|L67 
+|Appliances; Furniture; Other Consumer Durables|L68 
+|Industry Studies: Manufacturing: Other|L69 
+|Industry Studies: Primary Products and Construction: General|L70 
+|Mining, Extraction, and Refining: Hydrocarbon Fuels|L71 
+|Mining, Extraction, and Refining: Other Nonrenewable Resources|L72 
+|Forest Products|L73 
+|Construction|L74 
+|Industry Studies: Primary Products and Construction: Government Policy|L78 
+|Industry Studies: Primary Products and Construction: Other|L79 
+|Industry Studies: Services: General|L80 
+|Retail and Wholesale Trade; e-Commerce|L81 
+|Entertainment; Media|L82 
+|Sports; Gambling; Restaurants; Recreation; Tourism|L83 
+|Personal, Professional, and Business Services|L84 
+|Real Estate Services|L85 
+|Information and Internet Services; Computer Software|L86 
+|Postal and Delivery Services|L87 
+|Industry Studies: Services: Government Policy|L88 
+|Industry Studies: Services: Other|L89 
+|Industry Studies: Transportation and Utilities: General|L90 
+|Transportation: General|L91 
+|Railroads and Other Surface Transportation|L92 
+|Air Transportation|L93 
+|Electric Utilities|L94 
+|Gas Utilities; Pipelines; Water Utilities|L95 
+|Telecommunications|L96 
+|Utilities: General|L97 
+|Industry Studies: Utilities and Transportation: Government Policy|L98 
+|Industry Studies: Utilities and Transportation: Other|L99 
+|Business Administration and Business Economics; Marketing; Accounting; Personnel Economics: General|M00 
+|Business Administration: General|M10 
+|Production Management|M11 
+|Personnel Management; Executives; Executive Compensation|M12 
+|New Firms; Startups|M13 
+|Corporate Culture; Diversity; Social Responsibility|M14 
+|IT Management|M15 
+|International Business Administration|M16 
+|Business Administration: Other|M19 
+|Business Economics: General|M20 
+|Business Economics|M21 
+|Business Economics: Other|M29 
+|Marketing and Advertising: General|M30 
+|Marketing|M31 
+|Advertising|M37 
+|Marketing and Advertising: Government Policy and Regulation|M38 
+|Marketing and Advertising: Other|M39 
+|Accounting and Auditing: General|M40 
+|Accounting|M41 
+|Auditing|M42 
+|Accounting and Auditing: Government Policy and Regulation|M48 
+|Accounting: Other|M49 
+|Personnel Economics: General|M50 
+|Personnel Economics: Firm Employment Decisions; Promotions|M51 
+|Personnel Economics: Compensation and Compensation Methods and Their Effects|M52 
+|Personnel Economics: Training|M53 
+|Personnel Economics: Labor Management|M54 
+|Personnel Economics: Labor Contracting Devices|M55 
+|Personnel Economics: Other|M59 
+|Economic History: General|N00 
+|Development of the Discipline: Historiographical; Sources and Methods|N01 
+|Economic History: Macroeconomics and Monetary Economics; Industrial Structure; Growth; Fluctuations: General, International, or Comparative|N10 
+|Economic History: Macroeconomics and Monetary Economics; Industrial Structure; Growth; Fluctuations: U.S.; Canada: Pre-1913|N11 
+|Economic History: Macroeconomics and Monetary Economics; Industrial Structure; Growth; Fluctuations: U.S.; Canada: 1913-|N12 
+|Economic History: Macroeconomics and Monetary Economics; Industrial Structure; Growth; Fluctuations: Europe: Pre-1913|N13 
+|Economic History: Macroeconomics and Monetary Economics; Industrial Structure; Growth; Fluctuations: Europe: 1913-|N14 
+|Economic History: Macroeconomics and Monetary Economics; Industrial Structure; Growth; Fluctuations: Asia including Middle East|N15 
+|Economic History: Macroeconomics and Monetary Economics; Industrial Structure; Growth; Fluctuations: Latin America; Caribbean|N16 
+|Economic History: Macroeconomics and Monetary Economics; Industrial Structure; Growth; Fluctuations: Africa; Oceania|N17 
+|Economic History: Financial Markets and Institutions: General, International, or Comparative|N20 
+|Economic History: Financial Markets and Institutions: U.S.; Canada: Pre-1913|N21 
+|Economic History: Financial Markets and Institutions: U.S.; Canada: 1913-|N22 
+|Economic History: Financial Markets and Institutions: Europe: Pre-1913|N23 
+|Economic History: Financial Markets and Institutions: Europe: 1913-|N24 
+|Economic History: Financial Markets and Institutions: Asia including Middle East|N25 
+|Economic History: Financial Markets and Institutions: Latin America; Caribbean|N26 
+|Economic History: Financial Markets and Institutions: Africa; Oceania|N27 
+|Economic History: Labor and Consumers, Demography, Education, Health, Welfare, Income, Wealth, Religion, and Philanthropy: General, International, or Comparative|N30 
+|Economic History: Labor and Consumers, Demography, Education, Health, Welfare, Income, Wealth, Religion, and Philanthropy: U.S.; Canada: Pre-1913|N31 
+|Economic History: Labor and Consumers, Demography, Education, Health, Welfare, Income, Wealth, Religion, and Philanthropy: U.S.; Canada: 1913-|N32 
+|Economic History: Labor and Consumers, Demography, Education, Health, Welfare, Income, Wealth, Religion, and Philanthropy: Europe: Pre-1913|N33 
+|Economic History: Labor and Consumers, Demography, Education, Health, Welfare, Income, Wealth, Religion, and Philanthropy: Europe: 1913-|N34 
+|Economic History: Labor and Consumers, Demography, Education, Health, Welfare, Income, Wealth, Religion, and Philanthropy: Asia including Middle East|N35 
+|Economic History: Labor and Consumers, Demography, Education, Health, Welfare, Income, Wealth, Religion, and Philanthropy: Latin America; Caribbean|N36 
+|Economic History: Labor and Consumers, Demography, Education, Health, Welfare, Income, Wealth, Religion, and Philanthropy: Africa; Oceania|N37 
+|Economic History: Government, War, Law, International Relations, and Regulation: General, International, or Comparative|N40 
+|Economic History: Government, War, Law, International Relations, and Regulation: U.S.; Canada: Pre-1913|N41 
+|Economic History: Government, War, Law, International Relations, and Regulation: U.S.; Canada: 1913-|N42 
+|Economic History: Government, War, Law, International Relations, and Regulation: Europe: Pre-1913|N43 
+|Economic History: Government, War, Law, International Relations, and Regulation: Europe: 1913-|N44 
+|Economic History: Government, War, Law, International Relations, and Regulation: Asia including Middle East|N45 
+|Economic History: Government, War, Law, International Relations, and Regulation: Latin America; Caribbean|N46 
+|Economic History: Government, War, Law, International Relations, and Regulation: Africa; Oceania|N47 
+|Economic History: Agriculture, Natural Resources, Environment, and Extractive Industries: General, International, or Comparative|N50 
+|Economic History: Agriculture, Natural Resources, Environment, and Extractive Industries: U.S.; Canada: Pre-1913|N51 
+|Economic History: Agriculture, Natural Resources, Environment, and Extractive Industries: U.S.; Canada: 1913-|N52 
+|Economic History: Agriculture, Natural Resources, Environment, and Extractive Industries: Europe: Pre-1913|N53 
+|Economic History: Agriculture, Natural Resources, Environment, and Extractive Industries: Europe: 1913-|N54 
+|Economic History: Agriculture, Natural Resources, Environment, and Extractive Industries: Asia including Middle East|N55 
+|Economic History: Agriculture, Natural Resources, Environment, and Extractive Industries: Latin America; Caribbean|N56 
+|Economic History: Agriculture, Natural Resources, Environment, and Extractive Industries: Africa; Oceania|N57 
+|Economic History: Manufacturing and Construction: General, International, or Comparative|N60 
+|Economic History: Manufacturing and Construction: U.S.; Canada: Pre-1913|N61 
+|Economic History: Manufacturing and Construction: U.S.; Canada: 1913-|N62 
+|Economic History: Manufacturing and Construction: Europe: Pre-1913|N63 
+|Economic History: Manufacturing and Construction: Europe: 1913-|N64 
+|Economic History: Manufacturing and Construction: Asia including Middle East|N65 
+|Economic History: Manufacturing and Construction: Latin America; Caribbean|N66 
+|Economic History: Manufacturing and Construction: Africa; Oceania|N67 
+|Economic History: Transport, International and Domestic Trade, Energy, Technology, and Other Services: General, International, or Comparative|N70 
+|Economic History: Transport, Trade, Energy, Technology, and Other Services: U.S.; Canada: Pre-1913|N71 
+|Economic History: Transport, Trade, Energy, Technology, and Other Services: U.S.; Canada: 1913-|N72 
+|Economic History: Transport, Trade, Energy, Technology, and Other Services: Europe: Pre-1913|N73 
+|Economic History: Transport, Trade, Energy, Technology, and Other Services: Europe: 1913-|N74 
+|Economic History: Transport, Trade, Energy, Technology, and Other Services: Asia including Middle East|N75 
+|Economic History: Transport, Trade, Energy, Technology, and Other Services: Latin America; Caribbean|N76 
+|Economic History: Transport, Trade, Energy, Technology, and Other Services: Africa; Oceania|N77 
+|Micro-Business History: General, International, or Comparative|N80 
+|Micro-Business History: U.S.; Canada: Pre-1913|N81 
+|Micro-Business History: U.S.; Canada: 1913-|N82 
+|Micro-Business History: Europe: Pre-1913|N83 
+|Micro-Business History: Europe: 1913-|N84 
+|Micro-Business History: Asia including Middle East|N85 
+|Micro-Business History: Latin America; Caribbean|N86 
+|Micro-Business History: Africa; Oceania|N87 
+|Regional and Urban History: General|N90 
+|Regional and Urban History: U.S.; Canada: Pre-1913|N91 
+|Regional and Urban History: U.S.; Canada: 1913-|N92 
+|Regional and Urban History: Europe: Pre-1913|N93 
+|Regional and Urban History: Europe: 1913-|N94 
+|Regional and Urban History: Asia including Middle East|N95 
+|Regional and Urban History: Latin America; Caribbean|N96 
+|Regional and Urban History: Africa; Oceania|N97 
+|Economic Development, Innovation, Technological Change, and Growth|O00 
+|Economic Development: General|O10 
+|Macroeconomic Analyses of Economic Development|O11 
+|Microeconomic Analyses of Economic Development|O12 
+|Economic Development: Agriculture; Natural Resources; Energy; Environment; Other Primary Products|O13 
+|Industrialization; Manufacturing and Service Industries; Choice of Technology|O14 
+|Economic Development: Human Resources; Human Development; Income Distribution; Migration|O15 
+|Economic Development: Financial Markets; Saving and Capital Investment; Corporate Finance and Governance|O16 
+|Formal and Informal Sectors; Shadow Economy; Institutional Arrangements|O17 
+|Economic Development: Urban, Rural, Regional, and Transportation Analysis; Housing; Infrastructure|O18 
+|International Linkages to Development; Role of International Organizations|O19 
+|Development Planning and Policy: General|O20 
+|Planning Models; Planning Policy|O21 
+|Project Analysis|O22 
+|Fiscal and Monetary Policy in Development|O23 
+|Development Planning and Policy: Trade Policy; Factor Movement; Foreign Exchange Policy|O24 
+|Industrial Policy|O25 
+|Development Planning and Policy: Other|O29 
+|Innovation; Research and Development; Technological Change; Intellectual Property Rights: General|O30 
+|Innovation and Invention: Processes and Incentives|O31 
+|Management of Technological Innovation and R&D|O32 
+|Technological Change: Choices and Consequences; Diffusion Processes|O33 
+|Intellectual Property and Intellectual Capital|O34 
+|Social Innovation|O35 
+|Open Innovation‡|O36 
+|Technological Change: Government Policy|O38 
+|Technological Change: Other|O39 
+|Economic Growth and Aggregate Productivity: General|O40 
+|One, Two, and Multisector Growth Models|O41 
+|Monetary Growth Models|O42 
+|Institutions and Growth|O43 
+|Environment and Growth|O44 
+|Empirical Studies of Economic Growth; Aggregate Productivity; Cross-Country Output Convergence|O47 
+|Economic Growth and Aggregate Productivity: Other|O49 
+|Economywide Country Studies: General|O50 
+|Economywide Country Studies: U.S.; Canada|O51 
+|Economywide Country Studies: Europe|O52 
+|Economywide Country Studies: Asia including Middle East|O53 
+|Economywide Country Studies: Latin America; Caribbean|O54 
+|Economywide Country Studies: Africa|O55 
+|Economywide Country Studies: Oceania|O56 
+|Comparative Studies of Countries|O57 
+|Economic Systems: General|P00 
+|Capitalist Systems: General|P10 
+|Capitalist Systems: Planning, Coordination, and Reform|P11 
+|Capitalist Enterprises|P12 
+|Cooperative Enterprises|P13 
+|Capitalist Systems: Property Rights|P14 
+|Capitalist Systems: Political Economy|P16 
+|Capitalist Systems: Performance and Prospects|P17 
+|Energy; Environment|P18 
+|Capitalist Systems: Other|P19 
+|Socialist Systems and Transitional Economies: General|P20 
+|Socialist Systems and Transitional Economies: Planning, Coordination, and Reform|P21 
+|Socialist Systems and Transitional Economies: Prices|P22 
+|Socialist Systems and Transitional Economies: Factor and Product Markets; Industry Studies; Population|P23 
+|Socialist Systems and Transitional Economies: National Income, Product, and Expenditure; Money; Inflation|P24 
+|Socialist Systems and Transitional Economies: Urban, Rural, and Regional Economics|P25 
+|Socialist Systems and Transitional Economies: Political Economy; Property Rights|P26 
+|Socialist Systems and Transitional Economies: Performance and Prospects|P27 
+|Socialist Systems and Transitional Economies: Natural Resources; Energy; Environment|P28 
+|Socialist Systems and Transitional Economies: Other|P29 
+|Socialist Institutions and Their Transitions: General|P30 
+|Socialist Enterprises and Their Transitions|P31 
+|Collectives; Communes; Agriculture|P32 
+|Socialist Institutions and Their Transitions: International Trade, Finance, Investment, Relations, and Aid|P33 
+|Socialist Institutions and Their Transitions: Financial Economics|P34 
+|Socialist Institutions and Their Transitions: Public Economics|P35 
+|Socialist Institutions and Their Transitions: Consumer Economics; Health; Education and Training: Welfare, Income, Wealth, and Poverty|P36 
+|Socialist Systems and Transitional Economies: Legal Institutions; Illegal Behavior|P37 
+|Socialist Institutions and Their Transitions: Other|P39 
+|Other Economic Systems: General|P40 
+|Other Economic Systems: Planning, Coordination, and Reform|P41 
+|Other Economic Systems: Productive Enterprises; Factor and Product Markets; Prices; Population|P42 
+|Other Economic Systems: Public Economics; Financial Economics|P43 
+|Other Economic Systems: National Income, Product, and Expenditure; Money; Inflation|P44 
+|Other Economic Systems: International Trade, Finance, Investment and Aid|P45 
+|Other Economic Systems: Consumer Economics; Health; Education and Training; Welfare, Income, Wealth, and Poverty|P46 
+|Other Economic Systems: Performance and Prospects|P47 
+|Other Economic Systems: Political Economy; Legal Institutions; Property Rights; Natural Resources; Energy; Environment; Regional Studies|P48 
+|Other Economic Systems: Other|P49 
+|Comparative Economic Systems: General|P50 
+|Comparative Analysis of Economic Systems|P51 
+|Comparative Studies of Particular Economies|P52 
+|Comparative Economic Systems: Other|P59 
+|Agricultural and Natural Resource Economics; Environmental and Ecological Economics: General|Q00 
+|Sustainable Development|Q01 
+|Commodity Markets|Q02 
+|Agriculture: General|Q10 
+|Agriculture: Aggregate Supply and Demand Analysis; Prices|Q11 
+|Micro Analysis of Farm Firms, Farm Households, and Farm Input Markets|Q12 
+|Agricultural Markets and Marketing; Cooperatives; Agribusiness|Q13 
+|Agricultural Finance|Q14 
+|Land Ownership and Tenure; Land Reform; Land Use; Irrigation; Agriculture and Environment|Q15 
+|Agricultural R&D; Agricultural Technology; Biofuels; Agricultural Extension Services|Q16 
+|Agriculture in International Trade|Q17 
+|Agricultural Policy; Food Policy|Q18 
+|Agriculture: Other|Q19 
+|Renewable Resources and Conservation: General|Q20 
+|Renewable Resources and Conservation: Demand and Supply; Prices|Q21 
+|Renewable Resources and Conservation: Fishery; Aquaculture|Q22 
+|Renewable Resources and Conservation: Forestry|Q23 
+|Renewable Resources and Conservation: Land|Q24 
+|Renewable Resources and Conservation: Water|Q25 
+|Recreational Aspects of Natural Resources|Q26 
+|Renewable Resources and Conservation: Issues in International Trade|Q27 
+|Renewable Resources and Conservation: Government Policy|Q28 
+|Renewable Resources and Conservation: Other|Q29 
+|Nonrenewable Resources and Conservation: General|Q30 
+|Nonrenewable Resources and Conservation: Demand and Supply; Prices|Q31 
+|Exhaustible Resources and Economic Development|Q32 
+|Resource Booms|Q33 
+|Natural Resources and Domestic and International Conflicts|Q34 
+|Hydrocarbon Resources|Q35 
+|Nonrenewable Resources and Conservation: Issues in International Trade|Q37 
+|Nonrenewable Resources and Conservation: Government Policy|Q38 
+|Nonrenewable Resources and Conservation: Other|Q39 
+|Energy: General|Q40 
+|Energy: Demand and Supply; Prices|Q41 
+|Alternative Energy Sources|Q42 
+|Energy and the Macroeconomy|Q43 
+|Energy Forecasting|Q47 
+|Energy: Government Policy|Q48 
+|Energy: Other|Q49 
+|Environmental Economics: General|Q50 
+|Valuation of Environmental Effects|Q51 
+|Pollution Control Adoption and Costs; Distributional Effects; Employment Effects|Q52 
+|Air Pollution; Water Pollution; Noise; Hazardous Waste; Solid Waste; Recycling|Q53 
+|Climate; Natural Disasters and Their Management; Global Warming|Q54 
+|Environmental Economics: Technological Innovation|Q55 
+|Environment and Development; Environment and Trade; Sustainability; Environmental Accounts and Accounting; Environmental Equity; Population Growth|Q56 
+|Ecological Economics: Ecosystem Services; Biodiversity Conservation; Bioeconomics; Industrial Ecology|Q57 
+|Environmental Economics: Government Policy|Q58 
+|Environmental Economics: Other|Q59 
+|Urban, Rural, Regional, Real Estate, and Transportation Economics: General|R00 
+|General Regional Economics (includes Regional Data)|R10 
+|Regional Economic Activity: Growth, Development, Environmental Issues, and Changes|R11 
+|Size and Spatial Distributions of Regional Economic Activity|R12 
+|General Equilibrium and Welfare Economic Analysis of Regional Economies|R13 
+|Land Use Patterns|R14 
+|General Regional Economics: Econometric and Input-Output Models; Other Models|R15 
+|General Regional Economics: Other|R19 
+|Urban, Rural, Regional, Real Estate, and Transportation Economics: Household Analysis: General|R20 
+|Urban, Rural, Regional, Real Estate, and Transportation Economics: Housing Demand|R21 
+|Urban, Rural, Regional, Real Estate, and Transportation Economics: Other Demand|R22 
+|Urban, Rural, Regional, Real Estate, and Transportation Economics: Regional Migration; Regional Labor Markets; Population; Neighborhood Characteristics|R23 
+|Urban, Rural, Regional, Real Estate, and Transportation Economics: Government Policy|R28 
+|Urban, Rural, Regional, Real Estate, and Transportation Economics: Household Analysis: Other|R29 
+|Real Estate Markets, Spatial Production Analysis, and Firm Location: General|R30 
+|Housing Supply and Markets|R31 
+|Other Spatial Production and Pricing Analysis|R32 
+|Nonagricultural and Nonresidential Real Estate Markets|R33 
+|Production Analysis and Firm Location: Government Policy|R38 
+|Real Estate Markets, Spatial Production Analysis, and Firm Location: Other|R39 
+|Transportation Economics: General|R40 
+|Transportation: Demand, Supply, and Congestion; Travel Time; Safety and Accidents; Transportation Noise|R41 
+|Transportation Economics: Government and Private Investment Analysis; Road Maintenance, Transportation Planning|R42 
+|Transportation Economics: Government Pricing and Policy|R48 
+|Transportation Economics: Other|R49 
+|Regional Government Analysis: General|R50 
+|Finance in Urban and Rural Economies|R51 
+|Regional Government Analysis: Land Use and Other Regulations|R52 
+|Public Facility Location Analysis; Public Investment and Capital Stock|R53 
+|Regional Development Planning and Policy|R58 
+|Regional Government Analysis: Other|R59 
+|Data: Tables and Charts|Y10 
+|Introductory Material|Y20 
+|Book Reviews (unclassified)|Y30 
+|Dissertations (unclassified)|Y40 
+|Further Reading (unclassified)|Y50 
+|Excerpt|Y60 
+|No Author General Discussions|Y70 
+|Related Disciplines|Y80 
+|Miscellaneous Categories: Other|Y90 
+|Pictures and Maps|Y91 
+|Novels, Self-Help Books, etc.|Y92 
+|Other Special Topics: General|Z00 
+|Cultural Economics; Economic Sociology; Economic Anthropology: General|Z10 
+|Cultural Economics: Economics of the Arts and Literature|Z11 
+|Cultural Economics: Religion|Z12 
+|Economic Sociology; Economic Anthropology; Language; Social and Economic Stratification|Z13 
+|Cultural Economics: Public Policy|Z18 
+|Cultural Economics: Other|Z19 
+|Sports Economics: General|Z20 
+|Sports Economics: Industry Studies|Z21 
+|Sports Economics: Labor Issues|Z22 
+|Sports Economics: Finance|Z23 
+|Sports Economics: Policy|Z28 
+|Sports Economics: Other|Z29 
+|Tourism Economics: General|Z30 
+|Tourism: Industry Studies|Z31 
+|Tourism and Development|Z32 
+|Tourism: Marketing and Finance|Z33 
+|Tourism: Policy|Z38 
+|Tourism: Other|Z39 

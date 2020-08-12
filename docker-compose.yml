@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  api:
+    container_name: econfast-api
+    build: .
+    ports:
+      - "3000:3000" # API port
+      - "9229:9229" # Node debug
+    environment:
+      - WAIT_HOSTS=elasticsearch:9200
+      - NODE_ENV=local
+      - ES_HOST=elasticsearch
+      - PORT=3000
+    volumes:
+      - ./repec_data:/usr/src/app/repec_data
+    # restart: on-failure
+    # depends_on:
+    #   - elasticsearch
+    # links: 
+    #   - elasticsearch
+  frontend:
+    container_name: econfast-ui
+    image: nginx
+    volumes:
+      - ./public:/usr/share/nginx/html
+    ports:
+      - "8080:80" # Forward site to localhost:8080
+  elasticsearch:
+    container_name: econfast-es
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+      - indices.breaker.total.use_real_memory=false
+    ports:
+      - "9300:9300" # ES node communication
+      - "9200:9200" # ES REST API
+volumes:
+  es_data:
