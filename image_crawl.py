@@ -2,6 +2,7 @@ import json, os, argparse, time, sys, requests, urllib3
 from urllib3.exceptions import InsecureRequestWarning
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import WebDriverException
 from bs4 import BeautifulSoup
 
 '''
@@ -21,22 +22,28 @@ def create_browser():
         print(f'Install on your machine. exception: {e}')
         sys.exit()
     browser.set_window_size(1280, 1024)
+    print("Chrome browser launched")
     return browser
 
-def yield_image_urls(browser, phrases, pages_down=0, max_images=3):
+BROWSER = [create_browser()]
+
+def yield_image_urls(phrases, pages_down=0, max_images=3):
     search_url = 'https://www.google.com/search?q=' + '+'.join(phrases) + '&source=lnms&tbm=isch&num=3'
-    browser.get(search_url)
-    time.sleep(1)
-    element = browser.find_element_by_tag_name('body')
-    if pages_down > 0:
-        try:
-            browser.find_element_by_id('smb').click()
+    try:
+        BROWSER[0].get(search_url)
+        time.sleep(1)
+        element = BROWSER[0].find_element_by_tag_name('body')
+        if pages_down > 0:
+            BROWSER[0].find_element_by_id('smb').click()
             for i in range(pages_down):
                 element.send_keys(Keys.PAGE_DOWN)
                 time.sleep(0.3)
-        except Exception as e:
-            print('Could not scroll down', e)
-    page_source = browser.page_source 
+    except WebDriverException as e:
+        logging.warning("WebDriverException", e)
+        BROWSER[0].close()
+        BROWSER[0] = create_browser()
+        return
+    page_source = BROWSER[0].page_source 
     soup = BeautifulSoup(page_source, 'lxml')
     images = soup.find_all('img')
     count = 0
@@ -56,6 +63,3 @@ def yield_image_urls(browser, phrases, pages_down=0, max_images=3):
                     return
             except Exception as e:
                 print('No image source found', e)
-
-def destroy_browser(browser):
-    browser.close()
