@@ -12273,6 +12273,9 @@ const vm = new Vue ({
         document.documentElement.scrollTop = 0
       }
     },
+    noNextResultsAvailable() {
+    	return this.searchOffset >= this.numHits
+    },
     /** Get previous page of search results */
     async prevResultsPage () {
       this.searchOffset -= 10
@@ -12280,7 +12283,9 @@ const vm = new Vue ({
       this.searchResults = await this.search()
       document.documentElement.scrollTop = 0
     },
-
+    noPrevResultsAvailable() {
+    	return this.searchOffset <= 0
+    },
     async getPubli(pub_ids, idx, author_name) {
       try {
         this.idx = idx
@@ -12289,6 +12294,7 @@ const vm = new Vue ({
         const response = await axios.get(`${this.baseUrl}/publi`, { params: { publi_id: publi_id } })
         res = response.data.hits.hits[0]
         res.coauthors = res._source.authors.map(function(o) { return o.full_name}).filter(function(fn) { return fn != author_name }).join("; ")
+        res['abstract'] = res._source.abstract ? res._source.abstract : "<em>Non disponible (cliquer sur le titre de la publication pour la consulter)</em>"
         return res
       } catch (err) {
         console.error(err)
