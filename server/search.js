@@ -9,7 +9,9 @@ module.exports = {
           should: [
               { match: { 'full_name': { query: term, boost: 64, operator: 'and', fuzziness: 'auto' } } },
               { match: { 'institutions': { query: term, boost: 16, operator: 'and', fuzziness: 'auto' } } },
-              { match: { 'jel-codes': { query: term, boost: 8, operator: 'and' } } },
+              { match: { 'jel-labels-fr': { query: term, boost: 8, operator: 'and' } } },
+              { match: { 'jel-labels-en': { query: term, boost: 8, operator: 'and' } } },
+              { match: { 'keywords': { query: term, boost: 8, operator: 'and' } } },
               { match: { 'titles':    { query: term, boost: 4, operator: 'and', fuzziness: 'auto' } } },
               { match: { 'abstracts': { query: term, boost: 2, operator: 'and', fuzziness: 'auto' } } },
               // TODO negative boost for aptonyms (i.e. author names which are a common economics term...)
