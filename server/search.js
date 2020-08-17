@@ -4,6 +4,10 @@ module.exports = {
   queryTerm (term, offset = 0) {
     const body = {
       from: offset,
+      sort: [
+        {"influence": "desc"},
+        "_score"
+      ],
       query: { 
         bool: {
           should: [
@@ -34,31 +38,3 @@ module.exports = {
     return client.search({ index: index_publi, body: body })
   }  
 }
-
-/*
-   "query": {
-        "function_score": {
-            "query": {
-                "match": { "message": "elasticsearch" }
-            },
-            "script_score" : {
-                "script" : {
-                    "params": {
-                        "a": 5,
-                        "b": 1.2
-                    },
-                    "source": "params.a / Math.pow(params.b, doc['likes'].value)"
-                }
-            }
-        }
-    }
-
-
-{
-        'query': {
-            'term': {
-                'full_namw.keyword': term
-            }
-        }
-}
-*/
