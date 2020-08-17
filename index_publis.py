@@ -12,6 +12,12 @@ logging.basicConfig(level=logging.WARNING)
 ES_PORT = 9200
 
 ES_INDEX_PUBLI = 'publication'
+
+'''
+	ES mapping used for the publication index.
+
+	Includes the synonym list used to handle acronymized variants of institution names.
+'''	
 MAPPING_PUBLI = {
 	"settings": {
 		"number_of_shards": 1,
@@ -828,12 +834,14 @@ MAPPING_PUBLI = {
             "title": { "type": "text" },
         	# Publication abstract
             "abstract": { "type": "text" },
-            # Topic (in English, not the JEL code!)
-            "jel-labels": { "type": "keyword" },
+            # JEL topic (in English, not the JEL code)
+            "jel-labels-en": { "type": "text" },
+            # JEL topic (in French, not the JEL code)
+            "jel-labels-fr": { "type": "text" },
             # Keywords as a separate field
-            "keywords": { "type": "keyword" },
+            "keywords": { "type": "text" },
             # Publication date
-            "creation_date": { "type": "keyword", "index": False },
+            "creation_date": { "type": "text", "index": False },
             # List of authors
             "authors":  { 
             	"type": "nested", 
@@ -866,12 +874,15 @@ def lines(f):
 		except:
 			logging.debug("Error opening file {} in {}".format(f, e), sys.exc_info()[0])
 
-JEL_CODEMAP = { }
+JEL_CODEMAP_EN = { }
+JEL_CODEMAP_FR = { }
 for l in lines("./jel_map"):
-	cl = l.split("|")[1:3]
-	code = cl[1].strip()
-	label = cl[0].replace("Other", "").replace("General", "").replace(":", "").strip()
-	JEL_CODEMAP[code] = label
+	cl = list([i.strip() for i in l.split("|")])
+	code = cl[1]
+	label_en = cl[0].replace("Other", "").replace("General", "").replace(":", "")
+	JEL_CODEMAP_EN[code] = label_en
+	label_fr = cl[2].replace("Autre", "").replace("Général", "").replace(":", "")
+	JEL_CODEMAP_FR[code] = label_fr
 
 # RE_FIELD_VALUE = re.compile(r"([\w\-]+): (.+)")
 RE_FIELD_VALUE = re.compile(r"([^: ]+): ?(.+)")
@@ -892,17 +903,31 @@ def is_accepted_tpl(val):
 	#return val in ["ReDIF-Article 1.0", "ReDIF-Paper 1.0"]
 	return True
 
-def jel_labels(val):
+def jel_labels_en(val):
 	for c in re.split(r';|,| ', val):
 		code = c.strip()
 		if not code:
 			continue
 		try:
-			yield JEL_CODEMAP[code]
+			yield JEL_CODEMAP_EN[code]
 		except KeyError:
 			if len(code) == 2:
 				try:
-					yield JEL_CODEMAP[code + "0"]
+					yield JEL_CODEMAP_EN[code + "0"]
+				except KeyError:
+					logging.error("JEL code not found ({} nor {})".format(code, code + "0"))	
+
+def jel_labels_fr(val):
+	for c in re.split(r';|,| ', val):
+		code = c.strip()
+		if not code:
+			continue
+		try:
+			yield JEL_CODEMAP_FR[code]
+		except KeyError:
+			if len(code) == 2:
+				try:
+					yield JEL_CODEMAP_FR[code + "0"]
 				except KeyError:
 					logging.error("JEL code not found ({} nor {})".format(code, code + "0"))	
 
@@ -963,7 +988,8 @@ def parse_repec_file(f):
 				elif obj and key == "File-URL".lower():
 					obj["url"] = val
 				elif obj and key == "Classification-JEL".lower():
-					obj["jel-labels"] = list(jel_labels(val))
+					obj["jel-labels-en"] = list(jel_labels_en(val))
+					obj["jel-labels-fr"] = list(jel_labels_fr(val))
 				elif obj and key == "Keywords".lower():
 					obj["keywords"] = list(keywords(val))
 		elif txt and len(l) > 0:
