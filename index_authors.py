@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import re, io, glob, logging, sys
-import normalize_institutions, image_crawl
+import normalize_institutions, image_crawl, image_analysis
+from math import *
 from pathlib import Path
 from collections import defaultdict, Counter
 from multiprocessing import Pool
@@ -9,6 +10,14 @@ from elasticsearch.helpers import parallel_bulk, scan
 
 # Position this flag to False if you wish to build a quick index, without images (author pictures and institution logos)
 CRAWL_IMAGES = True
+
+# If true, a check will be done on pictures scraped for an author so as to validate that it's a portrait, and not 
+# a group portrait but an individual one
+CHECK_FACE_PICTURES = False
+
+# If true, a check will be done on pictures scraped for an institution so as to minimally validate that it's not black-and-white 
+# (since any logo will have at least a non-monochromatic color scheme)
+CHECK_INST_LOGO = False
 
 logging.basicConfig(level=logging.WARNING)
 
@@ -45,12 +54,7 @@ MAPPING_AUTHOR = {
             "home_url": { "type": "text", "index": False },
             # List of institutions (appear n times if n publications signed by this author when affiliated to that institution)
 			"institutions": { "type": "text" },
-
-			# List of topics (in English, not the JEL codes!), appear n times if n papers published by this author on that JEL topic 
-			# "specialties": { "type": "text" },
-			# List of topics (in French, not the JEL codes!), appear n times if n papers published by this author on that JEL topic 
-			# "specialites": { "type": "text" },
-
+			# List of topics (in French) that will be displayed as part of search results
 			"show_specialites": { "type": "text", "index": False },
 			# List of topics as keywords, appear n times if n papers published by this author with that keyword
 			"keywords": { "type": "text" },
@@ -63,7 +67,9 @@ MAPPING_AUTHOR = {
 			# Latest publication seen
 			"latest_pub_date": { "type": "text" },
 			# List of pairs (pub_id, pub_date)
-			"pub_ids": { "type": "nested" }
+			"pub_ids": { "type": "nested" },
+			# Influence metric used to search search results
+			"influence": { "type": "integer"}			
 		}
 	}
 }
@@ -126,21 +132,22 @@ def best_name_variant(names):
 def name_variant_key(n):
 	return metric_token_count(n), metric_full_token_count(n), metric_comma_count(n)
 
+def token_count(n, k):
+	m = remove_comma(n)
+	l = list([i.strip("-. ") for i in re.split(r'\.| ', m) if len(i.strip("-. ")) > k])
+	return len(l)
+
 '''
 	1st metric to select the best name variant
 '''	
 def metric_token_count(n):
-	m = remove_comma(n)
-	l = list([i.strip(". ") for i in re.split(r'\.| ', m) if len(i.strip(". ")) > 0])
-	return len(l)
+	return token_count(n, 0)
 
 '''
 	2nd metric to select the best name variant
 '''	
 def metric_full_token_count(n):
-	m = remove_comma(n)
-	l = list([i.strip(". ") for i in re.split(r'\.| ', m) if len(i.strip(". ")) > 1])
-	return len(l)
+	return token_count(n, 1)
 
 '''
 	3rd metric to select the best name variant
@@ -148,6 +155,7 @@ def metric_full_token_count(n):
 def metric_comma_count(n):
 	return 0 if n.count(",") > 0 else 1
 
+# Map from author name hash to homepage URL
 TOP_AUTHORS = dict()
 for l in lines('top_authors'):
 	items = list([i.strip() for i in l.split("|")])
@@ -172,16 +180,45 @@ INST_LOGOS = dict()
 	or will scrape it from Google Image Search results.
 """	
 def fetch_logo(inst, obj):
-	if CRAWL_IMAGES: # and inst in TOP_INSTITS:
+	if CRAWL_IMAGES:
 		inst_hash = normalize_institutions.hash_institution(inst)
 		if inst_hash not in INST_LOGOS:
 			query_str = ' '.join(inst.split("-")[:2])
-			logo_urls = list(image_crawl.yield_image_urls(["logo", query_str]))
+			img_urls = list(image_crawl.yield_image_urls(["logo", query_str]))
+			if CHECK_INST_LOGO:
+				logo_urls = list([logo_url for logo_url in logo_urls if not image_analysis.is_greyscale(logo_url)])
+				logging.debug("{} out of {} pictures scraped for institution {} were color pics".format(len(logo_urls), len(img_urls), inst))
+			else:
+				logo_urls = img_urls
 			INST_LOGOS[inst_hash] = logo_urls
 		else:
 			logo_urls = INST_LOGOS[inst_hash]
 		if len(logo_urls) > 0:
 			obj["logo_urls"] = logo_urls
+
+'''
+	Computes a measure of influence for an author, which will be used for ES search result scoring.
+
+	This measure combines number of publications with an abstract (because more valuable than the next),
+	number of publications without an abstract, number of specialties, whether the current affiliation 
+	is a top institution, whether the current affiliation has a logo to display, and whether a profile 
+	picture was found for the author.
+'''
+def author_influence(author):
+	# Score publications in [0, 400]
+	score_publi = 100 * min(log10(len(author["pub_ids"])), 4)
+	# Score affiliation in [0, 300]
+	if "current_institution" in author:
+		score_inst = 200 if author["current_institution"] in TOP_INSTITS else 100
+		if len(author["logo_urls"]) > 0:
+			score_inst += 100
+	else:
+		score_inst = 0
+	# Score profile pic in [0, 200]
+	score_pic = 200 if "pic_urls" in author and len(author["pic_urls"]) > 0 else 0
+	# Score specialties in [0, 120]
+	score_specs = 40 * min(len(AUTHOR_SPECIALTIES[name_hash]), 3)
+	return score_publi + score_inst + score_pic + score_specs
 
 '''
 	Indexing method used for a publication author who is already in  the authors index.
@@ -219,8 +256,18 @@ def index_existing_author(publi, pub_tuple, author, aid_by_hash, full_name, name
 	if "title" in publi:
 		upd_author["titles"] = old_author["titles"] +  " " + publi["title"]
 	upd_author["pub_ids"] = sorted(old_author["pub_ids"] + [pub_tuple], key=valid_pubdate, reverse=True)
+	upd_author["influence"] = author_influence(upd_author)
 	# TODO see if abstracts can fit in
 	resp = ES.update(index=ES_INDEX_AUTHOR, id=aid, body={ "doc": upd_author })
+
+
+'''
+	This method is used to determine whether a given author should have their picture crawled, 
+	along with their homepage.
+'''
+def crawl_profile_pic(full_name, name_hash):
+	return CRAWL_IMAGES and name_hash in TOP_AUTHORS
+	# return CRAWL_IMAGES and metric_full_token_count(full_name) > 1
 
 '''
 	Indexing method used for a publication author who is not yet in the authors index.
@@ -249,15 +296,21 @@ def index_new_author(publi, pub_tuple, pub_date, author, aid_by_hash, full_name,
 		home_url = TOP_AUTHORS[name_hash]
 		if len(home_url) > 0:
 			obj["home_url"] = home_url
-		if CRAWL_IMAGES:
-			img_urls = list(image_crawl.yield_image_urls([full_name]))
-			logging.debug("Found {} pictures for author {}".format(len(img_urls), full_name))
+	if crawl_profile_pic(full_name, name_hash):
+		img_urls = list(image_crawl.yield_image_urls([full_name]))
+		if CHECK_FACE_PICTURES:
+			face_urls = list([img_url for img_url in img_urls if image_analysis.face_count(img_url) == 1])
+			logging.debug("{} out of {} pictures scraped for {} were a portrait".format(len(face_urls), len(img_urls), full_name))
+			if len(face_urls) > 0:
+				obj["pic_urls"] = face_urls
+		else:
 			if len(img_urls) > 0:
 				obj["pic_urls"] = img_urls
 	if "jel-labels-fr" in publi:
 		for jel_label in publi["jel-labels-fr"]:
 			AUTHOR_SPECIALTIES[name_hash][jel_label] += 1
 	obj["show_specialites"] = specialties_label(AUTHOR_SPECIALTIES[name_hash])
+	obj["influence"] = author_influence(obj)
 	resp = ES.index(index=ES_INDEX_AUTHOR, body=obj)
 	aid_by_hash[name_hash] = resp["_id"]
 	logging.debug("Saved new author: {} --> {}".format(full_name, name_hash))
@@ -267,7 +320,7 @@ def specialties_label(specs):
 	if len(specs) < MAX_DISPLAYED_SPECIALTIES:
 		return "; ".join(specs.keys())
 	else:
-		return "; ".join([k for k, v in specs.most_common(MAX_DISPLAYED_SPECIALTIES)]) 
+		return "; ".join([k for k, v in specs.most_common(MAX_DISPLAYED_SPECIALTIES)])
 		+ " (et {} autres)".format(len(specs) - MAX_DISPLAYED_SPECIALTIES)
 
 def index_authors_from_publis():
