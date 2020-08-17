@@ -1,4 +1,6 @@
-import re
+# -*- coding: utf-8 -*-
+
+import re, requests
 from urllib3.exceptions import InsecureRequestWarning
 from bs4 import BeautifulSoup
 
@@ -11,9 +13,22 @@ Il est destiné à être exécuté une seule fois, et doit l'être avant l'index
 
 AUTHOR_RE = re.compile(r"/[a-z]/[a-z]{3}[0-9]{1,3}.html")
 
-with open("top.person.all.html") as f:
+def fetch_author_info(url):
+	response = requests.get("https://ideas.repec.org" + url)
+	soup = BeautifulSoup(response.content, 'lxml')
+	tags = soup.find_all("td", {"class": "homelabel"})
+	if len(tags) == 1:
+		daddy = tags[0].parent
+		next_tag = daddy.findNext("td").findNext("td")
+		if next_tag:
+			return next_tag.text
+	return None
+
+with open("backup/top.person.all.html") as f:
     soup = BeautifulSoup(f, "html.parser")
-    images = soup.find_all('a')
-    images = soup.find_all('a', {'href': AUTHOR_RE})
-    for image in images:
-        print(image.text)
+    authors = soup.find_all('a', {'href': AUTHOR_RE})
+    for author in authors:
+    	full_name = author.text
+    	author_page = author.get("href")
+    	homepage = fetch_author_info(author_page)
+    	print("|".join([full_name, homepage if homepage else ""]))

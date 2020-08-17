@@ -8,8 +8,10 @@ Le processus d'installation et d'exécution de EconFast peut être décomposé e
 Il s'agit de la phase préalable de transformation et traitement des données sources, réalisée au moment de la conception et de l'écriture de l'outil (et donc pas à réitérer lors de l'installation de l'outil, contrairement à la phase suivante).
 
 Elle contient les étapes nécessaires à la gestion des synonymes et la fonctionnalité d'auto-complétion, chacune décrite dans une section par la suite.
-- pour les synonymes, le script `build_synonyms_inst.sh` est exécuté
-- pour l'auto-complétion, 
+- Pour les synonymes, le script `build_synonyms_inst.sh` est exécuté.
+- Pour l'auto-complétion, les listes d'institutions enregistrées dans la base EDIC, d'auteurs les plus populaires, et de thématiques JEL sont simplement converties en objets JSON pour servir de cibles d'auto-complétion.
+  - La liste d'auteurs est constituée en exécutant la commande `python3 find_top_authors.py | grep -v "†" | sort | uniq > top_authors` (les URLs des pages personnelles de ces chercheurs sont glanées au passage)
+  - Les listes d'institutions et de thématiques sont simplement téléchargées sans autre traitement
 
 2. Installation logicielle
 
@@ -44,11 +46,11 @@ Des suggestions sont proposées en fonction des caractères saisis dans la barre
 
 De façon classique, il se compose d'une base de données, d'un backend et d'un frontend.
 
-La base de données est une instance ElasticSearch (ES) qui contient deux index : un pour les publications et un pour les auteurs. Au moment de l'indexation, des images sont récupérées depuis Google Image Search. C'est la seule partie de scraping proprement dite dans l'outil, car le reste des données (REPeC ou autres sources) sont récupérées par un simple téléchargement. Le peuplement de la base ES est assuré par une variété de scripts se trouvant dans le répertoire racine du repo github du projet.
+__La base de données__ est une instance ElasticSearch (ES) qui contient deux index : un pour les publications et un pour les auteurs. Au moment de l'indexation, des images sont récupérées depuis Google Image Search. C'est la seule partie de scraping proprement dite dans l'outil, car le reste des données (REPeC ou autres sources) sont récupérées par un simple téléchargement. Le peuplement de la base ES est assuré par une variété de scripts se trouvant dans le répertoire racine du repo github du projet.
 
-Le backend est composé d'une API REST très basique implémentée en Node.js, avec deux verbes `/search` et `/publi` pour récupérer respectivement les résultats de recherche d'auteurs et une publication particulière. Son code est dans le répertoire `server` du repo github du projet.
+__Le backend__ est composé d'une API REST très basique implémentée en Node.js, avec deux verbes `/search` et `/publi` pour récupérer respectivement les résultats de recherche d'auteurs et une publication particulière. Son code est dans le répertoire `server` du repo github du projet.
 
-Le front-end est une application Vue.js de type _single-page app_. Son code est dans le répertoire `public` du repo github du projet. Noter que tous les éléments de ce front-end, y compris le composant d'auto-suggestion, ont été écrits en pur Vue.js, sans utiliser de librairie tierce-partie, par souci de simplicité.
+__Le front-end__ est une application Vue.js de type _single-page app_. Son code est dans le répertoire `public` du repo github du projet. Noter que tous les éléments de ce front-end, y compris le composant d'auto-suggestion, ont été écrits en pur Vue.js, sans utiliser de librairie tierce-partie, par souci de simplicité.
 
 L'ensemble est livré sous forme de 3 conteneurs Docker (un conteneur pour l'instance ES, un pour le serveur Node.js, et un pour le front-end Vue.js), qui peuvent être étendus à 4 en ajoutant un simple composant nginx faisant office de reverse proxy pour une meilleur tenue en charge (ce qui ne s'est pas avéré nécessaire lors de nos tests de montée en charge).
 
@@ -65,19 +67,28 @@ L'ensemble est livré sous forme de 3 conteneurs Docker (un conteneur pour l'ins
 
 # Guide d'utilisation
 
+__Recherche__
+
 Saisir des termes de recherche :
 - nom et/ou prénom d'auteur
 - institution (université, association, etc.)
 - mots-clefs thématiques
 Ces types de termes peuvent être combinés, toutefois l'application renvoie toujours un ou plusieurs auteurs comme résultats de recherche.
 
-Pour chaque auteur correspondant à la requête, il est possible de cliquer sur ce résultat afin d'afficher un profil sommaire et de parcourir ses publications. La navigation parmi les publications se fait via les boutons _Publi suivante_ et _Publi précédente_, ou au clavier par les flèches gauche et droite ; l'utilisateur peut cliquer sur le titre d'une publication pour l'ouvrir dans son navigateur ; enfin, on revient aux résultats de recherche (ou à une nouvelle recherche) en cliquant sur le bouton _Fermer_ (ou via la touche d'échappement).
+__Résultats__
+
+Pour chaque auteur correspondant à la requête, il est possible de cliquer sur ce résultat afin d'afficher un profil sommaire et de parcourir ses publications. 
+La navigation parmi les publications se fait via les boutons _Publi suivante_ et _Publi précédente_, ou au clavier par les flèches gauche et droite ; l'utilisateur peut cliquer sur le titre d'une publication pour l'ouvrir dans son navigateur ; enfin, on revient aux résultats de recherche (ou à une nouvelle recherche) en cliquant sur le bouton _Fermer_ (ou via la touche d'échappement).
 
 
 
 
 
+# Améliorations futures
 
+Comme dans tout projet de hackathon, l'exercice de conception et implémentation, limité dans le temps par définition, a mis au jour de nombreuses pistes d'évolutions futures. Parmi celles-ci :
+
+- Photos des auteurs : filtrer les photos récoltées parmi les résultats Google Image Search afin de s'assurer que celles-ci correspondent à un (unique) visage de face, autrement dit une photo adaptée au profil du chercheur en question (alors qu'un nombre minime mais non négligeable d'images parmi les premiers résultats sont soit une photo de groupe, soit une photo de pied, ou quelques autres variantes).
 
 
 ----
@@ -173,6 +184,10 @@ Find authors for which the field current_institution is defined:
 	}
 	'
 
+# ES config
+
+- On positionne le timeout des scans à 60min (car l'indexation des auteurs prend un temps considérable, plusieurs heures sur une bonne machine)
+- Pour les _circuit breaker settings_ (https://www.elastic.co/guide/en/elasticsearch/reference/current/circuit-breaker.html), on positionne le flag `indices.breaker.total.use_real_memory = False`
 
 # Gestion des synonymes
 
@@ -191,7 +206,7 @@ On traite deux sortes de synonymes :
 
 #### Assemble list of top authors
 * Save https://ideas.repec.org/top/top.person.all.html
-* Run ` find_top_authors.py | grep -v "†" | sort | uniq > top_authors.uniq`
+* Run `python3 find_top_authors.py > top_authors`
 
 
 #### Traitement des codes et étiquettes JEL
