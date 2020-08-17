@@ -5,6 +5,10 @@ from pathlib import Path
 from multiprocessing import Pool
 from functools import reduce
 
+"""
+	This script produces a list of auto-completions for institutions. There will be another list for JEL topics.
+"""
+
 logging.basicConfig(level=logging.WARNING)
 
 ENCODINGS = ['utf-8', 'utf-16-le']
@@ -26,8 +30,7 @@ def lines(f):
 
 def stripped(s): return s.strip(" -_.,'?!").strip('"').strip()
 
-def lower_or_not(token):
-	return token.lower()
+def lower_or_not(token): return token.lower()
 
 def to_ASCII(phrase): return unicodedata.normalize('NFKD', phrase)
 
@@ -63,6 +66,10 @@ def normalize_and_validate_phrase(value):
 	tokens = normalize_and_validate_tokens(value)
 	return ' '.join(tokens) if len(tokens) > 0 else None
 
+def hash_institution(inst):
+	tokens = normalize_and_validate_tokens(inst)
+	return " ".join(sorted(set(tokens)))
+
 RE_FIELD_VALUE = re.compile(r"([^: ]+): ?(.+)")
 
 YIELD_COMPOUNDS = False
@@ -70,12 +77,9 @@ YIELD_COMPOUNDS = False
 def fetch_name(res):
 	if res[0]:
 		if res[1]:
-			# yield res[1]
 			if YIELD_COMPOUNDS:
 				yield res[0] + " // " + res[1]
 		yield res[0]
-		# else:
-		# 	yield res[0]
 
 def yield_some(res, res_en):
 	if ENGLISH_ONLY:
@@ -116,16 +120,13 @@ def print_all_institutions(p):
 	count = 0
 	path = Path(p)
 	for f in glob.glob("{}/*.rdf".format(p)):
-		for i in yield_institutions(f) if MODE == MODE_AUTOSUGGEST else yield_synonyms(f):
+		for i in yield_institutions(f):
 			count += 1
 			print(i)
 			if count >= MAX_ITEMS:
 				return
 
-MODE_SYNONYMS = 1 # To produce a list of synonyms in Solr format (with english conversion, "1 2"->"2" simplification)
-MODE_AUTOSUGGEST = 2 # To produce the list of auto-completions (for institutions - there will be another list for JEL topics)
-
-MODE = MODE_SYNONYMS
 ENGLISH_ONLY = True
+
 if __name__ == "__main__":
 	print_all_institutions("./repec_data/data/edi/inst")
