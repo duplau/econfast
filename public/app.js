@@ -12200,7 +12200,7 @@ const vm = new Vue ({
     return {
       baseUrl: 'http://localhost:3000',
       // baseUrl: 'http://c21a80c0bd66.ngrok.io:80',
-      searchTerm: 'coronavirus',
+      searchTerm: '',
       searchDebounce: null,
       searchResults: [],
       numHits: null,
@@ -12263,6 +12263,17 @@ const vm = new Vue ({
       const response = await axios.get(`${this.baseUrl}/search`, { params: { term: this.searchTerm, offset: this.searchOffset } })
       this.numHits = response.data.hits.total.value
       return response.data.hits.hits
+  //     return response.data.hits.hits.sort(function(hit1, hit2) {
+  //     	n1 = hit1._source.pub_ids.length
+  //     	n2 = hit2._source.pub_ids.length
+  //     	if (n1 != n2)
+  //     		return n2 - n1
+  //     	if(!hit1._source.pic_urls && hit2._source.pic_urls)
+  //     		return 1
+  //     	if(!hit2._source.pic_urls && hit1._source.pic_urls)
+  //     		return -1
+		//  return 0
+		// })
     },
     /** Get next page of search results */
     async nextResultsPage () {

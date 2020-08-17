@@ -31,42 +31,37 @@
       </div>
     </div>
 
-    <!-- Search Metadata Card -->
-    <div class="mui-panel">
-      <div class="mui--text-headline">{{ numHits }} résultats</div>
-      <div class="mui--text-subhead">Résultats {{ searchOffset }} à {{ searchOffset + 9 }}</div>
+    <!-- Search results -->
+    <div v-if="numHits" class="mui-panel">
+      <div class="mui--text-subhead">Résultats {{ searchOffset }} à {{ searchOffset + 9 }} (total : {{ numHits }})</div>
     </div>
-
-    <!-- Top Pagination Card -->
-    <div class="mui-panel pagination-panel">
-        <button class="mui-btn mui-btn--flat" v-on:click="prevResultsPage()">Prev Page</button>
-        <button class="mui-btn mui-btn--flat" v-on:click="nextResultsPage()">Next Page</button>
+    <div v-if="numHits" class="mui-panel pagination-panel">
+        <button class="mui-btn mui-btn--flat" v-bind:disabled="noPrevResultsAvailable()"  v-on:click="prevResultsPage()">Page précédente</button>
+        <button class="mui-btn mui-btn--flat" v-bind:disabled="noNextResultsAvailable()" v-on:click="nextResultsPage()">Page suivante</button>
     </div>
-
-    <!-- Search Results Card List -->
     <div class="search-results" ref="searchResults">
-      <div class="mui-panel" v-for="hit in searchResults"  v-on:click="showPubliModal(hit)">
-        <div class="mui--text-title text-white bg-primary">{{ hit._source.full_name }}</div>
-        <div class="mui-divider"></div>
-        <div v-if="!!hit._source.current_institution" class="headline-row ">
-          <div class="mui--text-subhead">Affiliation: {{ hit._source.current_institution }}</div>
-          <div v-if="hit._source.logo_urls"><img style="max-height: 100px" v-bind:src="hit._source.logo_urls[0]"/></div>
+      <div class="mui-panel card" style="width: 18rem;" v-for="hit in searchResults"  v-on:click="showPubliModal(hit)">
+        <img v-if="hit._source.pic_urls" class="card-img-top" style="max-height: 100px; max-width: 100px" v-bind:src="hit._source.pic_urls[0]">
+        <img v-if="!hit._source.pic_urls && hit._source.logo_urls" class="card-img-top" style="max-height: 100px; max-width: 100px" v-bind:src="hit._source.logo_urls[0]">
+        <div class="card-body">
+          <h5 class="card-title">{{ hit._source.full_name }}&nbsp;<span class="badge badge-secondary">Publications : {{ hit._source.pub_ids.length}}</span></h5>
+          <h6 v-if="!!hit._source.current_institution" class="card-subtitle mb-2 text-muted">{{ hit._source.current_institution }}</h6>
         </div>
-        <div v-if="!!hit._source.show_specialites.length > 0" class="mui--text-body2">Spécialités : {{ hit._source.show_specialites }}</div>
-      </div>
+        <ul v-if="!!hit._source.show_specialites.length > 0" class="list-group list-group-flush">
+          <li v-for="spec in hit._source.show_specialites.split('; ').slice(0, 3)" class="list-group-item">{{ spec }}</li>
+        </ul> 
+      </div>       
+    </div>
+    <div v-if="numHits" class="mui-panel pagination-panel">
+        <button class="mui-btn mui-btn--flat" v-bind:disabled="noPrevResultsAvailable()" v-on:click="prevResultsPage()">Page précédente</button>
+        <button class="mui-btn mui-btn--flat" v-bind:disabled="noNextResultsAvailable()" v-on:click="nextResultsPage()">Page suivante</button>
     </div>
 
-    <!-- Bottom Pagination Card -->
-    <div class="mui-panel pagination-panel">
-        <button class="mui-btn mui-btn--flat" v-bind:disabled="noPrevResultsAvailable()" v-on:click="prevResultsPage()">Prev Page</button>
-        <button class="mui-btn mui-btn--flat" v-bind:disabled="noNextResultsAvailable()" v-on:click="nextResultsPage()">Next Page</button>
-    </div>
-
-    <!-- Publication Modal Window -->
+    <!-- Publication modal window -->
     <div v-if="selectedAuthor" ref="publiModal" class="publi-modal">
       <div class="publi-container">
           <div class="headline-row ">
-            <div class="mui--text-headline text-white bg-primary">Publications de {{ selectedAuthor.full_name }}</div>
+            <div class="mui--text-headline">Publications de {{ selectedAuthor.full_name }}</div>
             <div  v-if="!!selectedAuthor.home_url">
               <a class="mui--text-body2" v-bind:href="selectedAuthor.home_url" target="_blank">Biographie</a>
             </div>
