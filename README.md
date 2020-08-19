@@ -14,6 +14,11 @@ Ces types de termes peuvent être combinés, toutefois l'application renvoie tou
 __Résultats__
 
 Pour chaque auteur correspondant à la requête, il est possible de cliquer sur ce résultat afin d'afficher un profil sommaire et de parcourir ses publications. 
+
+Le profil permet de naviguer vers une page professionnelle ("homepage") de l'économiste en question, quand celle-ci est disponible. Cette page contient souvent une notice biographique, aussi le lien s'appelle-t-il "Biographie".
+
+Le profil indique également de façon synthétique les économistes les plus proches de l'auteur considéré, la proximité étant calculée simplement à partir du nombre de co-publications. Ce "réseau de plus proches co-auteurs" est représenté par une visualisation très basique en graphe.
+
 La navigation parmi les publications se fait via les boutons _Publi suivante_ et _Publi précédente_, ou au clavier par les flèches gauche et droite ; l'utilisateur peut cliquer sur le titre d'une publication pour l'ouvrir dans son navigateur ; enfin, on revient aux résultats de recherche (ou à une nouvelle recherche) en cliquant sur le bouton _Fermer_ (ou via la touche d'échappement).
 
 # Installation
