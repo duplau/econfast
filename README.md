@@ -3,10 +3,12 @@
 
 __Recherche__
 
-Saisir des termes de recherche :
-- nom et/ou prénom d'auteur
-- institution (université, association, etc.)
+Il suffit de saisir un ou plusieurs termes de recherche :
+- nom et/ou prénom d'économiste
+- institution d'affiliation (université, association, etc.)
 - mots-clefs thématiques
+- expressions, mots ou concepts caractérisant le sujet de recherche.
+
 Ces types de termes peuvent être combinés, toutefois l'application renvoie toujours un ou plusieurs auteurs comme résultats de recherche.
 
 __Résultats__
@@ -80,10 +82,19 @@ Ils peuvent être étendus à 4 en ajoutant un simple composant nginx faisant of
 
 Quelques principes ont été suivis pour concevoir et implémenter cet outil :
 
-1. __Concision et clarté__ : le code a été écrit en privilégiant la concision sur la maintenabilté. Il s'agit d'un prototype et comme on le sait, tout prototype (surtout réalisé dans le cadre d'un hackathon est au mieux destiné à être refactorisé).
-2. __Méthodologie innovante__ : l'outil traite de gros volumes de données structurées (champs prédéfinis) et non structurées (texte des publications), sans toutefois relever du Big Data et en demeurant en mode batch (pas de traitement en temps réel). L'innovation de notre méthodologie réside dans la sélection et l'assemblage d'algorithmes ad-hoc pour traiter ces données : lignes de commande Unix relationnelles pour leur préparation, parsing léger pour leur transformation, base de données NoSQL pour l'indexation du texte, crawling des images au moment de l'indexation. Le tout en opérant des arbitrages entre exhaustivitée et faisabilité des traitements : par exemple les photos identifiant les chercheurs sont récupérées pour les auteurs les plus populaires uniquement, etc. 
-3. __Capacités d'intégration__ : l'architecture de l'outil est basé sur des conteneurs Docker, donc 100% portables et rendant l'installation triviale sur toute machine virtuelle, assemblés via docker-compose (noter qu'une première version plus complexe utilisait Kubernetes pour orchestrer les divers services, mais cela s'est avéré superflu et rendant le déploiement inutilement complexe). Par ailleurs, des tests ont été réalisés en utilisant plusieurs instances ElasticSearch, mais le gain en vitesse d'indexation ou de recherche n'était pas significatif. 
-4. __Acceptabilité technique et éthique__ : l'utilisation des données REPeC est faite par un simple téléchargement (c'est même la raison d'être de REPeC que de fournir cet accès via plusieurs sites miroirs). Quant aux résultats de Google Image Search, il s'agit d'image accessibles publiquement et le scraping est maîtrisé afin de rester dans les quotas imposés par Google (https://developers.google.com/webmaster-tools/search-console-api-original/v3/limits), soit 50 requêtes/s et 1200 requêtes/min. Noter que cette restriction ("throttling" en anglais) est assurée par le processus de sélection des images à récupérer : il s'agit uniquement des auteurs les plus populaires ("top authors" tels que définis par REPeC, cf. https://ideas.repec.org/top/top.person.all.html) et des institutions ayant le plus publié (tel que calculé par nos propres soins, lorsque le flag `COMPUTE_TOP_INSTITUTIONS` est positionné à `True` dans le script d'indexation des publications). 
+1. __Concision et clarté__
+	- Le code a été écrit en privilégiant la concision sur la maintenabilté.
+	- En effet il s'agit d'un prototype et comme on le sait, tout prototype (surtout réalisé dans le cadre d'un hackathon est au mieux destiné à être refactorisé).
+2. __Méthodologie innovante__
+	- L'outil traite de gros volumes de données structurées (champs prédéfinis) et non structurées (texte des publications), sans toutefois relever du Big Data et en demeurant en mode batch (pas de traitement en temps réel).
+	- L'innovation de notre méthodologie réside dans la sélection et l'assemblage d'algorithmes ad-hoc pour traiter ces données : lignes de commande Unix relationnelles pour leur préparation, parsing léger pour leur transformation, base de données NoSQL pour l'indexation du texte, crawling des images au moment de l'indexation. 
+	- Le tout en opérant des arbitrages entre exhaustivitée et faisabilité des traitements : par exemple les photos identifiant les chercheurs sont récupérées pour les auteurs les plus populaires uniquement, etc. 
+3. __Capacités d'intégration__
+	- L'architecture de l'outil est basé sur des conteneurs Docker, donc 100% portables et rendant l'installation triviale sur toute machine virtuelle, assemblés via docker-compose (noter qu'une première version plus complexe utilisait Kubernetes pour orchestrer les divers services, mais cela s'est avéré superflu et rendant le déploiement inutilement complexe).
+	- Par ailleurs, des tests ont été réalisés en utilisant plusieurs instances ElasticSearch, mais le gain en vitesse d'indexation ou de recherche n'était pas significatif. 
+4. __Acceptabilité technique et éthique__
+	- L'utilisation des données REPeC est faite par un simple téléchargement (c'est même la raison d'être de REPeC que de fournir cet accès via plusieurs sites miroirs).
+	- Quant aux résultats de Google Image Search, il s'agit d'image accessibles publiquement et le scraping est maîtrisé afin de rester dans les quotas imposés par Google (https://developers.google.com/webmaster-tools/search-console-api-original/v3/limits), soit 50 requêtes/s et 1200 requêtes/min. Noter que cette restriction ("throttling" en anglais) est assurée par le processus de sélection des images à récupérer : il s'agit uniquement des auteurs les plus populaires ("top authors" tels que définis par REPeC, cf. https://ideas.repec.org/top/top.person.all.html) et des institutions ayant le plus publié (tel que calculé par nos propres soins, lorsque le flag `COMPUTE_TOP_INSTITUTIONS` est positionné à `True` dans le script d'indexation des publications). 
 
 # Améliorations futures
 
@@ -126,5 +137,3 @@ Des suggestions sont proposées en fonction des caractères saisis dans la barre
 * institutions (5773 possibilités : les institutions enregistrées dans la base EDIC)
 * auteurs (5555 possibilités : les chercheurs les plus populaires)
 * thématiques (859 possibilités : toutes les thématiques JEL)
-
-- Stack technique et architecture : 3 composants Docker (serveur node / instance ElasticSearch / front-end Vue.js), qui peuvent être étendus à 4 en ajoutant un simple composant nginx faisant office de reverse proxy pour une meilleur tenue en charge.
