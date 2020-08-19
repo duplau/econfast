@@ -17,7 +17,7 @@ module.exports = {
               { match: { 'jel-labels-en': { query: term, boost: 8, operator: 'and' } } },
               { match: { 'keywords': { query: term, boost: 8, operator: 'and' } } },
               { match: { 'titles':    { query: term, boost: 4, operator: 'and', fuzziness: 'auto' } } },
-              { match: { 'abstracts': { query: term, boost: 2, operator: 'and', fuzziness: 'auto' } } },
+              // { match: { 'abstracts': { query: term, boost: 2, operator: 'and', fuzziness: 'auto' } } },
               // TODO negative boost for aptonyms (i.e. author names which are a common economics term...)
           ]
         }
