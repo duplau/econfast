@@ -118,7 +118,7 @@ Comme dans tout projet de hackathon, l'exercice de conception et implémentation
 ### Volumétrie
 
 Les données suivantes sont indexées, et donc requêtables, dans EconFast :
-- ??? publications
+- 6 354 032 publications
 - ??? auteurs, comprenant les 57 000 enregistrés dans REPeC
 - 4,657 institutions, dans 232 pays (selon l'EDIC), normalisées à partir de 176 477 dénominations uniques d'institutions
 - 869 thèmes JEL
