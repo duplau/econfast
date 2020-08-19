@@ -88,8 +88,8 @@ La navigation parmi les publications se fait via les boutons _Publi suivante_ et
 
 Comme dans tout projet de hackathon, l'exercice de conception et implémentation, limité dans le temps par définition, a mis au jour de nombreuses pistes d'évolutions futures. Parmi celles-ci :
 
-- Photos des auteurs : filtrer les photos récoltées parmi les résultats Google Image Search afin de s'assurer que celles-ci correspondent à un (unique) visage de face, autrement dit une photo adaptée au profil du chercheur en question (alors qu'un nombre minime mais non négligeable d'images parmi les premiers résultats sont soit une photo de groupe, soit une photo de pied, ou quelques autres variantes).
-
+- Photos des auteurs : filtrer les photos récoltées parmi les résultats Google Image Search afin de s'assurer que celles-ci correspondent à un (unique) visage de face, autrement dit une photo adaptée au profil du chercheur en question (alors qu'un nombre minime mais non négligeable d'images parmi les premiers résultats sont soit une photo de groupe, soit une photo de pied, ou quelques autres variantes). Un tel filtre a été implémenté dans le fichier `image_analysis.py`, mais pas activé dans les paramètres par défaut car l'analyse de chaque image est chronophage.
+- Logos des institutions : filtrer les images récoltées parmi les résultats Google Image Search afin de s'assurer que celles-ci représentent un logo d'institution (universitaire, privée, gouvernementale, etc.). Un filtre minimaliste consiste à inclure uniquement les images polychromatiques. Comme pour le filtre des photos d'auteurs, celui-ci a été implémenté dans le fichier `image_analysis.py`, mais pas activé dans les paramètres par défaut car l'analyse de chaque image est chronophage.
 
 ----
 
