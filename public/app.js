@@ -12285,7 +12285,7 @@ const vm = new Vue ({
       }
     },
     noNextResultsAvailable() {
-    	return this.searchOffset >= this.numHits
+    	return this.searchOffset + 10 > this.numHits
     },
     /** Get previous page of search results */
     async prevResultsPage () {
@@ -12329,6 +12329,25 @@ const vm = new Vue ({
         this.selectedAuthor = searchHit._source
         this.currentPubli = await this.getPubli(this.selectedAuthor.pub_ids, 0, this.selectedAuthor.full_name)
         this.modalOpened = true
+        if (this.selectedAuthor.pic_urls && this.selectedAuthor.pic_urls.length > 0)
+        	nodes = [{ id: 0, value: 16, shape: 'image', image: this.selectedAuthor.pic_urls[0], title: this.selectedAuthor.full_name }]
+		else 
+			nodes = [{ id: 0, value: 16, label: this.selectedAuthor.full_name, title: this.selectedAuthor.full_name }]
+		for(i = 0; i < this.selectedAuthor.coauthors.length; i++) {
+			nodes.push({id: i+1,  value: 10,  label: this.selectedAuthor.coauthors[i]["coauthor_hash"], title: this.selectedAuthor.coauthors[i]["coauthor_hash"] })
+		}
+		edges = []
+		for(i = 0; i < this.selectedAuthor.coauthors.length; i++) {
+			edges.push({
+				from: 0, 
+				to: i+1,  
+				value: this.selectedAuthor.coauthors[i]["copublications"],  
+				title: this.selectedAuthor.coauthors[i]["copublications"] + " co-publications" })
+		}
+		component = document.getElementById('econetwork')
+		new vis.Network(component, { nodes: nodes, edges: edges }, { nodes: { shape: 'dot' } });
+		console.log("Edges   " + edges.length)
+		component.style.display = edges.length > 0 ? 'block' : 'none'
       } catch (err) {
         console.error(err)
       }

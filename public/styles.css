@@ -59,6 +59,12 @@ body { font-family: 'EB Garamond', serif; }
   .search-results > div { flex-basis: 100%; }
 }
 
+#econetwork {
+  width: 240px;
+  height: 120px;
+  border: 1px solid lightgray;
+}
+
 .publi-container {
   max-width: 800px;
   margin: 0 auto;
