@@ -68,6 +68,10 @@ MAPPING_AUTHOR = {
 			"latest_pub_date": { "type": "text" },
 			# List of pairs (pub_id, pub_date)
 			"pub_ids": { "type": "nested" },
+			# Number of publications with a non-empty abstract
+			"abstracts": { "type": "integer"},
+			# List of pairs (co-author name hash, number of co-publications)
+			"coauthors": { "type": "nested" },
 			# Influence metric used to search search results
 			"influence": { "type": "integer"}			
 		}
@@ -205,12 +209,15 @@ def fetch_logo(inst, obj):
 	picture was found for the author.
 '''
 def author_influence(author):
-	# Score publications in [0, 400]
-	score_publi = 100 * min(log10(len(author["pub_ids"])), 4)
+	# Score publications in [0, 200]
+	score_publi = 50 * min(log10(len(author["pub_ids"])), 4)
+	# Score publications with abstracts in [0, 400]
+	if "abstracts" in author and author["abstracts"] > 0:
+		score_publi += 100 * min(log10(author["abstracts"]), 4)
 	# Score affiliation in [0, 300]
 	if "current_institution" in author:
 		score_inst = 200 if author["current_institution"] in TOP_INSTITS else 100
-		if len(author["logo_urls"]) > 0:
+		if "logo_urls" in author and len(author["logo_urls"]) > 0:
 			score_inst += 100
 	else:
 		score_inst = 0
@@ -226,7 +233,7 @@ def author_influence(author):
 	In this case, its JEL labels / specialties attributes are updated, along with its publication list,
 	and the current affiliation if needed.
 '''
-def index_existing_author(publi, pub_tuple, author, aid_by_hash, full_name, name_hash):
+def index_existing_author(publi, pub_tuple, has_abstract, author, aid_by_hash, full_name, name_hash, all_name_hashes):
 	logging.debug("Already existing author: {} --> {}".format(full_name, name_hash))
 	aid = aid_by_hash[name_hash]
 	obj = ES.get(index=ES_INDEX_AUTHOR, id=aid)
@@ -256,10 +263,21 @@ def index_existing_author(publi, pub_tuple, author, aid_by_hash, full_name, name
 	if "title" in publi:
 		upd_author["titles"] = old_author["titles"] +  " " + publi["title"]
 	upd_author["pub_ids"] = sorted(old_author["pub_ids"] + [pub_tuple], key=valid_pubdate, reverse=True)
+	if has_abstract:
+		upd_author["abstracts"] = old_author["abstracts"] + 1
+	coauthor_counts = Counter(dict([(d["coauthor_hash"], d["copublications"]) for d in old_author["coauthors"]]))
+	coauthor_names = dict([(d["coauthor_hash"], d["coauthor_name"]) for d in old_author["coauthors"]])
+	for other_name_hash, other_full_name in all_name_hashes.items():
+		if other_name_hash == name_hash:
+			continue
+		coauthor_counts[other_name_hash] += 1
+	upd_author["coauthors"] = list([{ 
+		"coauthor_name": coauthor_names[name_hash] if name_hash in coauthor_names else all_name_hashes[name_hash], 
+		"coauthor_hash": name_hash, 
+		"copublications": copublis } for name_hash, copublis in coauthor_counts.items()])
 	upd_author["influence"] = author_influence(upd_author)
 	# TODO see if abstracts can fit in
 	resp = ES.update(index=ES_INDEX_AUTHOR, id=aid, body={ "doc": upd_author })
-
 
 '''
 	This method is used to determine whether a given author should have their picture crawled, 
@@ -274,7 +292,7 @@ def crawl_profile_pic(full_name, name_hash):
 
 	In this case, mainly the  publication list is updated.
 '''
-def index_new_author(publi, pub_tuple, pub_date, author, aid_by_hash, full_name, name_hash):
+def index_new_author(publi, pub_tuple, has_abstract, pub_date, author, aid_by_hash, full_name, name_hash, all_name_hashes):
 	obj = {
 		"full_name": full_name,
 		"aliases": [full_name],
@@ -283,7 +301,8 @@ def index_new_author(publi, pub_tuple, pub_date, author, aid_by_hash, full_name,
 		"jel-labels-fr": ' '.join(publi["jel-labels-fr"]) if "jel-labels-fr" in publi else "",
 		"keywords": publi["keywords"] if "keywords" in publi else [],
 		"titles": publi["title"] if "title" in publi else "",
-		"pub_ids": [pub_tuple]
+		"pub_ids": [pub_tuple],
+		"abstracts": 1 if has_abstract else 0
 		# TODO see if they fit "abstracts": publi["abstracts"]
 	}
 	if "institution" in author:
@@ -310,6 +329,10 @@ def index_new_author(publi, pub_tuple, pub_date, author, aid_by_hash, full_name,
 		for jel_label in publi["jel-labels-fr"]:
 			AUTHOR_SPECIALTIES[name_hash][jel_label] += 1
 	obj["show_specialites"] = specialties_label(AUTHOR_SPECIALTIES[name_hash])
+	obj["coauthors"] = list([{
+		"coauthor_name": other_full_name, 
+		"coauthor_hash": other_name_hash, 
+		"copublications": 1 } for other_name_hash, other_full_name in all_name_hashes.items() if other_name_hash != name_hash])
 	obj["influence"] = author_influence(obj)
 	resp = ES.index(index=ES_INDEX_AUTHOR, body=obj)
 	aid_by_hash[name_hash] = resp["_id"]
@@ -330,16 +353,27 @@ def index_authors_from_publis():
 		publi = hit["_source"]
 		pub_id = hit["_id"]
 		pub_date = publi["creation-date"] if "creation-date" in publi else None
+		has_abstract = "abstract" in publi and len(publi["abstract"]) > 0
 		pub_tuple = { "pub_id": pub_id, "pub_date": pub_date }
-		for author in publi["authors"]:
+		all_authors = publi["authors"]
+		all_name_hashes = dict([(hash_name(author["full_name"]), author["full_name"]) for author in all_authors])
+		# TODO simplify the following iteration
+		for author in all_authors:
 			full_name = author["full_name"]
 			name_hash = hash_name(full_name)
 			if not name_hash:
-				logging.error("Could not compute name hash for {} (while indexing {})".format(full_name, publi))
-			elif name_hash in aid_by_hash:
-				index_existing_author(publi, pub_tuple, author, aid_by_hash, full_name, name_hash)
+				logging.error("Could not compute name hash for {}...".format(full_name, publi))
+				if "institution" in author:
+					full_name = author["institution"]
+					name_hash = hash_name(full_name)
+					if name_hash:
+						logging.error("... falling back on institution : {}".format(full_name))
+			if not name_hash:
+				continue
+			if name_hash in aid_by_hash:
+				index_existing_author(publi, pub_tuple, has_abstract, author, aid_by_hash, full_name, name_hash, all_name_hashes)
 			else:
-				index_new_author(publi, pub_tuple, pub_date, author, aid_by_hash, full_name, name_hash)
+				index_new_author(publi, pub_tuple, has_abstract, pub_date, author, aid_by_hash, full_name, name_hash, all_name_hashes)
 	ES.indices.refresh(index=ES_INDEX_AUTHOR)
 
 if __name__ == "__main__":
