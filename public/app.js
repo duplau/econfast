@@ -12334,7 +12334,7 @@ const vm = new Vue ({
 		else 
 			nodes = [{ id: 0, value: 16, label: this.selectedAuthor.full_name, title: this.selectedAuthor.full_name }]
 		for(i = 0; i < this.selectedAuthor.coauthors.length; i++) {
-			nodes.push({id: i+1,  value: 10,  label: this.selectedAuthor.coauthors[i]["coauthor_hash"], title: this.selectedAuthor.coauthors[i]["coauthor_hash"] })
+			nodes.push({id: i+1,  value: 10,  label: this.selectedAuthor.coauthors[i]["coauthor_name"], title: this.selectedAuthor.coauthors[i]["coauthor_name"] })
 		}
 		edges = []
 		for(i = 0; i < this.selectedAuthor.coauthors.length; i++) {
