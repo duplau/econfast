@@ -87,8 +87,8 @@
             <a class="mui--text-title" align="center" v-bind:href="currentPubli._source.url" target="_blank"><strong>{{ currentPubli._source.title }}</strong></a>
           </div>
           <br/>
-          <div v-if="!!currentPubli._source.creation_date" class="mui--text-body2"><strong>Date de publication :</strong> {{ currentPubli._source.creation_date }}</div>
-          <div v-if="!!currentPubli._source['jel-labels']" class="mui--text-body2"><strong>Catégories : </strong>{{ currentPubli._source["jel-labels"].slice(0, 3).join("; ") }}</div>
+          <div v-if="!!currentPubli._source['creation_date']" class="mui--text-body2"><strong>Date de publication :</strong> {{ currentPubli._source["creation_date"] }}</div>
+          <div v-if="!!currentPubli._source['jel-labels-fr']" class="mui--text-body2"><strong>Catégories : </strong>{{ currentPubli._source["jel-labels-fr"].slice(0, 3).join("; ") }}</div>
           <div v-if="!!currentPubli._source['keywords']" class="mui--text-body2"><strong>Mots-clefs : </strong>{{ currentPubli._source["keywords"].join(", ") }}</div>
           <div v-if="!!currentPubli.coauthors" class="mui--text-body2"><strong>Co-auteurs : </strong> {{ currentPubli.coauthors }}</div>
         </div>
