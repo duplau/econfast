@@ -35,7 +35,7 @@ MAPPING_PUBLI = {
             # Keywords as a separate field
             "keywords": { "type": "text" },
             # Publication date
-            "creation_date": { "type": "text", "index": False },
+            "creation_date": { "type": "text" },
             # List of authors
             "authors":  { 
             	"type": "nested", 
