@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.WARNING)
 
 ES_PORT = 9200
 
-ES_INDEX_PUBLI = 'publication'
+ES_INDEX_PUBLI = 'publication_a'
 
 '''
 	ES mapping used for the publication index.

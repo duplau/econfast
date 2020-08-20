@@ -23,9 +23,9 @@ logging.basicConfig(level=logging.WARNING)
 
 ES_PORT = 9200
 
-ES_INDEX_PUBLI = 'publication'
+ES_INDEX_PUBLI = 'publication_a'
 
-ES_INDEX_AUTHOR = 'author'
+ES_INDEX_AUTHOR = 'author_a'
 
 '''
 	ES mapping used for the author index.
@@ -34,14 +34,14 @@ MAPPING_AUTHOR = {
 	"settings": {
 		"number_of_shards": 1,
 		# Custom similarity used to avoid discounting very common names
-		"similarity": {
-		  "tf_sim": {
-		    "type": "scripted",
-		    "script": {
-		      "source": "double tf = Math.sqrt(doc.freq); double norm = 1/Math.sqrt(doc.length); return query.boost * tf * norm;"
-		    }
-		  }
-		},
+		# "similarity": {
+		#   "tf_sim": {
+		#     "type": "scripted",
+		#     "script": {
+		#       "source": "double tf = Math.sqrt(doc.freq); double norm = 1/Math.sqrt(doc.length); return query.boost * tf * norm;"
+		#     }
+		#   }
+		# },
 		"index": {
 			"analysis": {
 				"analyzer": {

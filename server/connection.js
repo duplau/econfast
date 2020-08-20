@@ -1,7 +1,7 @@
 const elasticsearch = require('elasticsearch')
 
-const index_publi = 'publication'
-const index_author = 'author'
+const index_publi = 'publication_a'
+const index_author = 'author_a'
 const port = 9200
 const host = process.env.ES_HOST || 'localhost'
 const client = new elasticsearch.Client({ host: { host, port } })
