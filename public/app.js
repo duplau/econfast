@@ -13206,7 +13206,7 @@ const vm = new Vue ({
 				from: 0, 
 				to: i+1,  
 				value: this.selectedAuthor.coauthors[i]["copublications"],  
-				title: this.selectedAuthor.coauthors[i]["copublications"] + " co-publications" })
+				title: this.selectedAuthor.coauthors[i]["copublications"] + " co-publications avec " + this.selectedAuthor.coauthors[i]["coauthor_name"]})
 		}
 		component = document.getElementById('econetwork')
 		new vis.Network(component, { nodes: nodes, edges: edges }, { nodes: { shape: 'dot' } });
