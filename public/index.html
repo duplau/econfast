@@ -15,16 +15,23 @@
 </head>
 <body>
 
-<div class="jumbotron">
+
+<nav class="navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="#"><h4 class="display-4"><img class="mr-3" src="logo_bdf.jpg" height="52" width="109" class="d-inline-block align-top">EconFast</h1></a>
+  <span class="navbar-text">Outil développé par le Pôle Fintech-Innovation de l'ACPR dans le cadre du hackathon organisé par la BdF (DGSEI + Lab)</span>
+  <a class="btn btn-primary btn-lg" href="https://github.com/duplau/econfast/blob/master/README.md" target="_blank" role="button">Documentation</a>
+</nav>
+
+<!-- <div class="jumbotron">
   <h1 class="display-4"><img class="mr-3" src="logo_ACPR.png">EconFast</h1>
   <p class="lead">Cet outil a été développé par le Pôle Fintech-Innovation de l'ACPR dans le cadre du hackathon organisé par la BdF (DGSEI + Lab).</p>
-  <hr class="my-4">
-  <p>Il permet de recherche rapidement et simplement des économistes spécialisés, par type de compétences, établissement ou organisation. Il donne accès à un profil de chaque économiste et à l'ensemble de ses publications.</p>
+  <hr class="lead">
+  <p>Il permet de rechercher rapidement et simplement des économistes spécialisés, par type de compétences, établissement ou organisation. Il donne accès à un profil de chaque économiste et à l'ensemble de ses publications.</p>
   <p class="lead">
     <a class="btn btn-primary btn-lg" href="https://github.com/duplau/econfast/blob/master/README.md" target="_blank" role="button">Documentation EconFast</a>
   </p>
 </div>
-
+ -->
 <div class="app-container" id="vue-instance" tabindex="0" @keydown.left="prevPubli()" @keydown.right="nextPubli()" @keydown.esc="closePubliModal()">
     <div class="mui-panel">
       <div class="mui-textfield">
@@ -42,20 +49,19 @@
     </div>
 
     <!-- Search results -->
-    <div v-if="numHits" class="mui-panel">
-      <div class="mui--text-subhead">Résultats {{ searchOffset }} à {{ searchOffset + 9 }} (total : {{ numHits }})</div>
-    </div>
     <div v-if="numHits" class="mui-panel pagination-panel">
-        <button class="mui-btn mui-btn--flat" v-bind:disabled="noPrevResultsAvailable()"  v-on:click="prevResultsPage()">Page précédente</button>
-        <button class="mui-btn mui-btn--flat" v-bind:disabled="noNextResultsAvailable()" v-on:click="nextResultsPage()">Page suivante</button>
+      <button class="mui-btn mui-btn--flat" v-bind:disabled="noPrevResultsAvailable()"  v-on:click="prevResultsPage()">Page précédente</button>
+      <h5>Résultats {{ searchOffset }} à {{ searchOffset + 9 }} (total : {{ numHits }})</h5>
+      <button class="mui-btn mui-btn--flat" v-bind:disabled="noNextResultsAvailable()" v-on:click="nextResultsPage()">Page suivante</button>
     </div>
     <div class="search-results" ref="searchResults">
       <div class="mui-panel card" style="width: 18rem;" v-for="hit in searchResults"  v-on:click="showPubliModal(hit)">
-        <img v-if="hit._source.pic_urls" class="card-img-top" style="max-height: 100px; max-width: 100px" v-bind:src="hit._source.pic_urls[0]">
-        <img v-if="!hit._source.pic_urls && hit._source.logo_urls" class="card-img-top" style="max-height: 100px; max-width: 100px" v-bind:src="hit._source.logo_urls[0]">
-        <div class="card-body">
-          <h5 class="card-title">{{ hit._source.full_name }}&nbsp;<span class="badge badge-secondary">Publications : {{ hit._source.pub_ids.length}}</span></h5>
-          <h6 v-if="!!hit._source.current_institution" class="card-subtitle mb-2 text-muted">{{ hit._source.current_institution }}</h6>
+        <img v-if="hit._source.pic_urls" class="mx-auto" class="card-img-top" style="max-height: 100px; max-width: 100px" v-bind:src="hit._source.pic_urls[0]">
+        <img v-if="!hit._source.pic_urls && hit._source.logo_urls" class="mx-auto" align="center" class="card-img-top" style="max-height: 100px; max-width: 100px" v-bind:src="hit._source.logo_urls[0]">
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ hit._source.full_name }}</h5>
+          <h5 v-if="!!hit._source.current_institution" class="card-subtitle mb-2 text-muted">{{ hit._source.current_institution }}</h5>
+          <h6 class="badge badge-secondary">Publications : {{ hit._source.pub_ids.length}}</h6>
         </div>
         <ul v-if="!!hit._source.show_specialites.length > 0" class="list-group list-group-flush">
           <li v-for="spec in hit._source.show_specialites.split('; ').slice(0, 3)" class="list-group-item">{{ spec }}</li>
@@ -63,8 +69,9 @@
       </div>       
     </div>
     <div v-if="numHits" class="mui-panel pagination-panel">
-        <button class="mui-btn mui-btn--flat" v-bind:disabled="noPrevResultsAvailable()" v-on:click="prevResultsPage()">Page précédente</button>
-        <button class="mui-btn mui-btn--flat" v-bind:disabled="noNextResultsAvailable()" v-on:click="nextResultsPage()">Page suivante</button>
+      <button class="mui-btn mui-btn--flat" v-bind:disabled="noPrevResultsAvailable()" v-on:click="prevResultsPage()">Page précédente</button>
+      <h5>Résultats {{ searchOffset }} à {{ searchOffset + 9 }} (total : {{ numHits }})</h5>
+      <button class="mui-btn mui-btn--flat" v-bind:disabled="noNextResultsAvailable()" v-on:click="nextResultsPage()">Page suivante</button>
     </div>
 
     <!-- Publication modal window -->
