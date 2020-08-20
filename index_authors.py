@@ -996,7 +996,7 @@ def fetch_logo(inst, obj):
 			query_str = ' '.join(inst.split("-")[:2])
 			img_urls = list(image_crawl.yield_image_urls(["logo", query_str]))
 			if CHECK_INST_LOGO:
-				logo_urls = list([logo_url for logo_url in logo_urls if not image_analysis.is_greyscale(logo_url)])
+				logo_urls = list([logo_url for logo_url in logo_urls if not image_analysis.isgray(logo_url)])
 				logging.debug("{} out of {} pictures scraped for institution {} were color pics".format(len(logo_urls), len(img_urls), inst))
 			else:
 				logo_urls = img_urls
@@ -1027,10 +1027,10 @@ def author_influence(author):
 			score_inst += 100
 	else:
 		score_inst = 0
-	# Score profile pic in [0, 200]
-	score_pic = 200 if "pic_urls" in author and len(author["pic_urls"]) > 0 else 0
-	# Score specialties in [0, 210]
-	score_specs = 70 * min(len(AUTHOR_SPECIALTIES[name_hash]), 3)
+	# Score profile pic in [0, 150]
+	score_pic = 150 if "pic_urls" in author and len(author["pic_urls"]) > 0 else 0
+	# Score specialties in [0, 150]
+	score_specs = 50 * min(len(AUTHOR_SPECIALTIES[name_hash]), 3)
 	return score_publi + score_inst + score_pic + score_specs
 
 '''
@@ -1122,7 +1122,15 @@ def index_new_author(publi, pub_tuple, has_abstract, pub_date, author, aid_by_ha
 		if len(home_url) > 0:
 			obj["home_url"] = home_url
 	if crawl_profile_pic(full_name, name_hash):
-		img_urls = list(image_crawl.yield_image_urls([full_name]))
+		if full_name.strip() == "Gilbert  Cette":
+			img_urls = [
+			"https://pbs.twimg.com/profile_images/1108312614856261632/efYSqPkI_400x400.jpg", 
+			"https://cdn-s-www.vosgesmatin.fr/images/2FFF1136-D68D-496F-9322-F1434F3D36A1/NW_raw/gilbert-cette-photo-dr-1546109637.jpg"]
+		elif full_name.strip() == "Thomas  Philippon":
+			img_urls = [
+			"https://www.lopinion.fr/sites/nb.com/files/styles/w_838/public/images/2019/12/thomas_philippon_dr.jpeg?itok=03QTaEze"]
+		else:
+			img_urls = list(image_crawl.yield_image_urls([full_name], max_images=5))
 		if CHECK_FACE_PICTURES:
 			face_urls = list([img_url for img_url in img_urls if image_analysis.face_count(img_url) == 1])
 			logging.debug("{} out of {} pictures scraped for {} were a portrait".format(len(face_urls), len(img_urls), full_name))
@@ -1155,7 +1163,11 @@ def specialties_label(specs):
 def index_authors_from_publis():
 	aid_by_hash = { }
 	resp = scan(ES, scroll='360m', index=ES_INDEX_PUBLI, query={ "query": { "match_all": {} } })
+	c = 0
 	for hit in resp:
+		c += 1
+		if c % 10000 == 0:
+			print("Scanned {} publications".format(c))
 		publi = hit["_source"]
 		pub_id = hit["_id"]
 		pub_date = publi["creation-date"] if "creation-date" in publi else None

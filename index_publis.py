@@ -94,8 +94,8 @@ AUTHOR_FIELDS = {
 INST_COUNTER = Counter()
 
 def is_accepted_tpl(val):
-	#return val in ["ReDIF-Article 1.0", "ReDIF-Paper 1.0"]
-	return True
+	return val in ["ReDIF-Article 1.0", "ReDIF-Paper 1.0"]
+	# return True
 
 def jel_labels_en(val):
 	for c in re.split(r';|,| ', val):

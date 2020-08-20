@@ -1,4 +1,4 @@
-import json, os, argparse, time, sys, requests, urllib3
+import json, os, argparse, time, sys, requests, urllib3, logging
 from urllib3.exceptions import InsecureRequestWarning
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -45,6 +45,11 @@ def yield_image_urls(phrases, pages_down=0, max_images=3):
         return
     page_source = BROWSER[0].page_source 
     soup = BeautifulSoup(page_source, 'lxml')
+    # Remove carrousel images which are undesired
+    carrousels = soup.find_all('scrolling-carousel')
+    if carrousels:
+        for carrousel in carrousels:
+            carrousel.extract()
     images = soup.find_all('img')
     count = 0
     for image in images:

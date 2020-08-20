@@ -64,6 +64,16 @@ Des suggestions sont proposées en fonction des caractères saisis dans la barre
 * auteurs (5555 possibilités : les chercheurs les plus populaires)
 * thématiques (859 possibilités : toutes les thématiques JEL)
 
+### _Scraping_ d'images
+
+L'outil réalise du _scraping_ des résultats de Google Image Search afin de glaner deux types d'images : portraits d'économistes et logos d'institutions.
+
+- __Photos des auteurs__ : nous avons implémenté dans EconSearch un module d'analyse des images résultantes de recherches Google Image Search afin de garantir que soient indexées des portraits des économistes. En d'autres termes, il s'agit de s'assurer que ces images correspondent à un (unique) visage de face, autrement dit une photo adaptée au profil du chercheur en question (alors qu'un nombre minime mais non négligeable d'images parmi les premiers résultats sont soit une photo de groupe, soit une photo de pied, ou quelques autres variantes). Un tel filtre a été implémenté dans le fichier `image_analysis.py` et est assez optimisé pour être exécuté en parallèle de l'indexation des données du moteur de recherche.
+
+Le code associé au _scraping_ d'images est dans le fichier `image_crawl.py`, il est très simple mais contient quelques heuristiques permettant de mieux cibler les résultats et d'exclure les images non-pertinentes telles que le carrousel d'images associées dans Google Search.
+
+
+
 # Détails techniques
 
 ### Architecture
@@ -105,7 +115,6 @@ Quelques principes ont été suivis pour concevoir et implémenter cet outil :
 
 Comme dans tout projet de hackathon, l'exercice de conception et implémentation, limité dans le temps par définition, a mis au jour de nombreuses pistes d'évolutions futures. Parmi celles-ci :
 
-- __Photos des auteurs__ : filtrer les photos récoltées parmi les résultats Google Image Search afin de s'assurer que celles-ci correspondent à un (unique) visage de face, autrement dit une photo adaptée au profil du chercheur en question (alors qu'un nombre minime mais non négligeable d'images parmi les premiers résultats sont soit une photo de groupe, soit une photo de pied, ou quelques autres variantes). Un tel filtre a été implémenté dans le fichier `image_analysis.py`, mais pas activé dans les paramètres par défaut car l'analyse de chaque image est chronophage.
 - __Logos des institutions__ : filtrer les images récoltées parmi les résultats Google Image Search afin de s'assurer que celles-ci représentent un logo d'institution (universitaire, privée, gouvernementale, etc.). Un filtre minimaliste consiste à inclure uniquement les images polychromatiques. Comme pour le filtre des photos d'auteurs, celui-ci a été implémenté dans le fichier `image_analysis.py`, mais pas activé dans les paramètres par défaut car l'analyse de chaque image est chronophage.
 - __Normalisation des intitulés d'institutions__ : parmi les 176 477 intitutlés uniques, le but est de dédoublonner aussi finement que possible, ce qui nécessite de construire une taxonomie hiérarchique (par exemple, University of Pennsylvania est une institution mère de la Wharton School). La première étape se fait par un algorithme itératif simple tel que celui-ci :
   1. fusionner les intitulés différant seulement par des caractères vides (whitespace)
@@ -119,7 +128,7 @@ Comme dans tout projet de hackathon, l'exercice de conception et implémentation
 
 Les données suivantes sont indexées, et donc requêtables, dans EconFast :
 - 6 354 032 publications
-- ??? auteurs, comprenant les 57 000 enregistrés dans REPeC
+- 1 012 467 auteurs, comprenant les 57 000 enregistrés dans REPeC (une majorité sont des auteurs "mineurs" au sens qu'ils n'ont publié qu'un article et ne sont pas affiliés à une institution officielle : cette situation est une conséquence de l'ouverture des données REPeC, à laquelle nous avons pallié en privilégiant les auteurs influe nts et les institutions enregistrées dans l'EDIC)
 - 4,657 institutions, dans 232 pays (selon l'EDIC), normalisées à partir de 176 477 dénominations uniques d'institutions
 - 869 thèmes JEL
 

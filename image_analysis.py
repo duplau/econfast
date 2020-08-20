@@ -12,6 +12,10 @@ def readb64(uri):
 	except:
 		return cv2.imread(uri)
 
+"""
+	Method used to minimally filter logo images: since these include at least one color,
+	this is a fast and easy way to avoid most false negatives from Google Image Search.
+"""
 def isgray(src):
 	img = readb64(src)
 	if img is None:
@@ -25,22 +29,6 @@ def isgray(src):
 	assert b.size == r.size
 	ratio_br = float(np.sum(b == r))  / b.size
 	return ratio_bg > .9 and ratio_br > .9
-
-"""
-	Method used to minimally filter logo images: since these include at least one color,
-	this is a fast and easy way to avoid most false negatives from Google Image Search.
-"""
-def is_greyscale(src):
-	img = readb64(src)
-	if img is None:
-		logging.error("Could not decode image {}".format(src))
-		return None
-	if len(img.shape) < 3:
-		return True
-	elif len(img.shape) == 3:
-		return False
-	else:
-		return None
 
 FACE_CASCADE = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
