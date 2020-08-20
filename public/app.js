@@ -13096,9 +13096,15 @@ const vm = new Vue ({
       this.setSuggestions()
     },
     setSuggestions() {
-      suggs_t = SUGGESTIONS_JEL.filter(item => item.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1).map(function(s) { return {"icon_url": "https://image.flaticon.com/icons/svg/126/126498.svg", "label": s} })
-      suggs_i = SUGGESTIONS_INST.filter(item => item.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1).map(function(s) { return {"icon_url": "https://image.flaticon.com/icons/svg/126/126496.svg", "label": s} })
-      suggs_a = SUGGESTIONS_AUTHORS.filter(item => item.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1).map(function(s) { return {"icon_url": "https://image.flaticon.com/icons/svg/126/126486.svg", "label": s} })
+      suggs_t = SUGGESTIONS_JEL.filter(item => item.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1).map(function(s) { 
+      	return {"icon_url": "https://image.flaticon.com/icons/svg/126/126498.svg", "label": s} 
+      })
+      suggs_i = SUGGESTIONS_INST.filter(item => item.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1).map(function(s) { 
+      	return {"icon_url": "https://image.flaticon.com/icons/svg/126/126496.svg", "label": s} 
+      })
+      suggs_a = SUGGESTIONS_AUTHORS.filter(item => item.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1).map(function(s) { 
+      	return {"icon_url": "https://image.flaticon.com/icons/svg/126/126486.svg", "label": s} 
+      })
       this.suggestions = suggs_t.concat(suggs_i.concat(suggs_a))
     },
     pickSuggestion(suggestion) {
@@ -13127,19 +13133,7 @@ const vm = new Vue ({
       const response = await axios.get(`${this.baseUrl}/search`, { params: { term: this.searchTerm, offset: this.searchOffset } })
       this.numHits = response.data.hits.total.value
       return response.data.hits.hits
-  //     return response.data.hits.hits.sort(function(hit1, hit2) {
-  //     	n1 = hit1._source.pub_ids.length
-  //     	n2 = hit2._source.pub_ids.length
-  //     	if (n1 != n2)
-  //     		return n2 - n1
-  //     	if(!hit1._source.pic_urls && hit2._source.pic_urls)
-  //     		return 1
-  //     	if(!hit2._source.pic_urls && hit1._source.pic_urls)
-  //     		return -1
-		//  return 0
-		// })
     },
-    /** Get next page of search results */
     async nextResultsPage () {
       if (this.numHits > 10) {
         this.searchOffset += 10
@@ -13151,7 +13145,6 @@ const vm = new Vue ({
     noNextResultsAvailable() {
     	return this.searchOffset + 10 > this.numHits
     },
-    /** Get previous page of search results */
     async prevResultsPage () {
       this.searchOffset -= 10
       if (this.searchOffset < 0) { this.searchOffset = 0 }
@@ -13169,7 +13162,8 @@ const vm = new Vue ({
         const response = await axios.get(`${this.baseUrl}/publi`, { params: { publi_id: publi_id } })
         res = response.data.hits.hits[0]
         res.coauthors = res._source.authors.map(function(o) { return o.full_name}).filter(function(fn) { return fn != author_name }).join("; ")
-        res['abstract'] = res._source.abstract ? res._source.abstract : "<em>Non disponible (cliquer sur le titre de la publication pour la consulter)</em>"
+        res['abstract'] = res._source.abstract ? res._source.abstract 
+        : "<em>Non disponible (cliquer sur le titre de la publication pour la consulter)</em>"
         return res
       } catch (err) {
         console.error(err)
@@ -13179,19 +13173,28 @@ const vm = new Vue ({
       if(!this.selectedAuthor)
       	return
       this.$refs.publiModal.scrollTop = 0
-      this.currentPubli = await this.getPubli(this.selectedAuthor.pub_ids, Math.min(this.idx + 1, this.pub_count - 1), this.selectedAuthor.full_name)
+      this.currentPubli = await this.getPubli(
+      	this.selectedAuthor.pub_ids, 
+      	Math.min(this.idx + 1, this.pub_count - 1), 
+      	this.selectedAuthor.full_name)
     },
     async prevPubli () {
       if(!this.selectedAuthor)
       	return
       this.$refs.publiModal.scrollTop = 0
-      this.currentPubli = await this.getPubli(this.selectedAuthor.pub_ids, Math.max(this.idx - 1, 0), this.selectedAuthor.full_name)
+      this.currentPubli = await this.getPubli(
+      	this.selectedAuthor.pub_ids, 
+      	Math.max(this.idx - 1, 0), 
+      	this.selectedAuthor.full_name)
     },
     async showPubliModal (searchHit) {
       try {
         document.body.style.overflow = 'hidden'
         this.selectedAuthor = searchHit._source
-        this.currentPubli = await this.getPubli(this.selectedAuthor.pub_ids, 0, this.selectedAuthor.full_name)
+        this.currentPubli = await this.getPubli(
+        	this.selectedAuthor.pub_ids, 
+        	0, 
+        	this.selectedAuthor.full_name)
         this.modalOpened = true
         if (this.selectedAuthor.pic_urls && this.selectedAuthor.pic_urls.length > 0)
         	nodes = [{ id: 0, value: 16, shape: 'image', image: this.selectedAuthor.pic_urls[0], title: this.selectedAuthor.full_name }]

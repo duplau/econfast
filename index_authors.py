@@ -34,14 +34,14 @@ MAPPING_AUTHOR = {
 	"settings": {
 		"number_of_shards": 1,
 		# Custom similarity used to avoid discounting very common names
-		# "similarity": {
-		#   "tf_sim": {
-		#     "type": "scripted",
-		#     "script": {
-		#       "source": "double tf = Math.sqrt(doc.freq); double norm = 1/Math.sqrt(doc.length); return query.boost * tf * norm;"
-		#     }
-		#   }
-		# },
+		"similarity": {
+		  "tf_sim": {
+		    "type": "scripted",
+		    "script": {
+		      "source": "double tf = Math.sqrt(doc.freq); double norm = 1/Math.sqrt(doc.length); return query.boost * tf * norm;"
+		    }
+		  }
+		},
 		"index": {
 			"analysis": {
 				"analyzer": {
@@ -855,7 +855,8 @@ MAPPING_AUTHOR = {
 	"mappings": {
 		"properties": {
 			# Full name as found in the ReDIF file
-			"full_name": { "type": "text", "similarity": "tf_sim" },
+			"full_name": { "type": "text" },
+			# "full_name": { "type": "text", "similarity": "tf_sim" },
 			# Aliases are just used to pick the best full name
             "aliases": { "type": "text", "index": False },
             # Author homepage
@@ -1014,7 +1015,7 @@ def fetch_logo(inst, obj):
 	is a top institution, whether the current affiliation has a logo to display, and whether a profile 
 	picture was found for the author.
 '''
-def author_influence(author):
+def author_influence(author, name_hash):
 	# Score publications in [0, 200]
 	score_publi = 50 * min(log10(len(author["pub_ids"])), 4)
 	# Score publications with abstracts in [0, 400]
@@ -1031,7 +1032,10 @@ def author_influence(author):
 	score_pic = 150 if "pic_urls" in author and len(author["pic_urls"]) > 0 else 0
 	# Score specialties in [0, 150]
 	score_specs = 50 * min(len(AUTHOR_SPECIALTIES[name_hash]), 3)
-	return score_publi + score_inst + score_pic + score_specs
+	score = score_publi + score_inst + score_pic + score_specs
+	if name_hash in TOP_AUTHORS:
+		score *= 2
+	return score
 
 '''
 	Indexing method used for a publication author who is already in  the authors index.
@@ -1081,7 +1085,7 @@ def index_existing_author(publi, pub_tuple, has_abstract, author, aid_by_hash, f
 		"coauthor_name": coauthor_names[name_hash] if name_hash in coauthor_names else all_name_hashes[name_hash], 
 		"coauthor_hash": name_hash, 
 		"copublications": copublis } for name_hash, copublis in coauthor_counts.items()])
-	upd_author["influence"] = author_influence(upd_author)
+	upd_author["influence"] = author_influence(upd_author, name_hash)
 	# TODO see if abstracts can fit in
 	resp = ES.update(index=ES_INDEX_AUTHOR, id=aid, body={ "doc": upd_author })
 
@@ -1147,7 +1151,7 @@ def index_new_author(publi, pub_tuple, has_abstract, pub_date, author, aid_by_ha
 		"coauthor_name": other_full_name, 
 		"coauthor_hash": other_name_hash, 
 		"copublications": 1 } for other_name_hash, other_full_name in all_name_hashes.items() if other_name_hash != name_hash])
-	obj["influence"] = author_influence(obj)
+	obj["influence"] = author_influence(obj, name_hash)
 	resp = ES.index(index=ES_INDEX_AUTHOR, body=obj)
 	aid_by_hash[name_hash] = resp["_id"]
 	logging.debug("Saved new author: {} --> {}".format(full_name, name_hash))
