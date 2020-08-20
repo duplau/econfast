@@ -210,7 +210,7 @@ def parse_repec_root_bulk(p):
 			print("Processing directory", f)
 			for success, info in parallel_bulk(ES, yield_bulk_items(f)):
 				if not success:
-					print('A document failed:', info)
+					logging.error('Failed to index a publication', info)
 
 COMPUTE_TOP_INSTITUTIONS = False
 
