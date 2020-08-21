@@ -5,14 +5,14 @@ module.exports = {
     const body = {
       from: offset,
       sort: [
-        {"influence": "desc"},
-        "_score"
+        "_score",
+        {"influence": "desc"}
       ],
       query: { 
         bool: {
           should: [
               { match: { 'full_name': { query: term, boost: 64, operator: 'and', fuzziness: 'auto' } } },
-              { match: { 'institutions': { query: term, boost: 16, operator: 'and', fuzziness: 'auto' } } },
+              { match: { 'institutions': { query: term, boost: 32, operator: 'and', fuzziness: 'auto' } } },
               { match: { 'jel-labels-fr': { query: term, boost: 8, operator: 'and' } } },
               { match: { 'jel-labels-en': { query: term, boost: 8, operator: 'and' } } },
               { match: { 'keywords': { query: term, boost: 8, operator: 'and' } } },
