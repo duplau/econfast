@@ -8,24 +8,29 @@ from multiprocessing import Pool
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import parallel_bulk, scan
 
-# Position this flag to False if you wish to build a quick index, without images (author pictures and institution logos)
-CRAWL_IMAGES = True
+logging.basicConfig(level=logging.WARNING)
+
+# Safety flag
+RECREATE_INDEX = True
+
+# Position these flags to False if you wish to build a quick index, without images (author pictures and institution logos)
+CRAWL_AUTHOR_PICS = True
+
+CRAWL_INST_LOGOS = False
 
 # If true, a check will be done on pictures scraped for an author so as to validate that it's a portrait, and not 
 # a group portrait but an individual one
-CHECK_FACE_PICTURES = False
+CHECK_FACE_PICTURES = True
 
 # If true, a check will be done on pictures scraped for an institution so as to minimally validate that it's not black-and-white 
 # (since any logo will have at least a non-monochromatic color scheme)
-CHECK_INST_LOGO = False
-
-logging.basicConfig(level=logging.WARNING)
+CHECK_INST_LOGO = True
 
 ES_PORT = 9200
 
-ES_INDEX_PUBLI = 'publication_a'
+ES_INDEX_PUBLI = 'publication'
 
-ES_INDEX_AUTHOR = 'author_a'
+ES_INDEX_AUTHOR = 'author'
 
 '''
 	ES mapping used for the author index.
@@ -913,6 +918,8 @@ def remove_comma(n):
 		logging.warning("Found full name with several commas: {}".format(n))
 	return l[1] + " " + l[0]	
 
+DUMMY_NAMES = ["anonymous", "collective"]
+
 def hash_name(n):
 	if len(n) < 4:
 		return None
@@ -920,8 +927,11 @@ def hash_name(n):
 	l = list([i.lower().strip(". ") for i in re.split(r'\.| ', m) if len(i.strip(". ")) > 0])
 	if len(l) > 0:
 		for i in range(1, len(l)-1):
-			l[i] = l[i][0]
-		return " ".join(l)
+			l[i] = l[i].strip()[0]
+		name_hash = " ".join(l)
+		if any([n in name_hash.lower() for n in DUMMY_NAMES]):
+			return None
+		return name_hash
 	return None
 
 '''
@@ -991,7 +1001,7 @@ INST_LOGOS = dict()
 	or will scrape it from Google Image Search results.
 """	
 def fetch_logo(inst, obj):
-	if CRAWL_IMAGES:
+	if CRAWL_INST_LOGOS:
 		inst_hash = normalize_institutions.hash_institution(inst)
 		if inst_hash not in INST_LOGOS:
 			query_str = ' '.join(inst.split("-")[:2])
@@ -1015,22 +1025,35 @@ def fetch_logo(inst, obj):
 	is a top institution, whether the current affiliation has a logo to display, and whether a profile 
 	picture was found for the author.
 '''
-def author_influence(author, name_hash):
-	# Score publications in [0, 200]
-	score_publi = 50 * min(log10(len(author["pub_ids"])), 4)
+def new_author_influence(author, name_hash):
+	score_publi = 40 * min(log10(len(author["pub_ids"])), 4)
 	# Score publications with abstracts in [0, 400]
 	if "abstracts" in author and author["abstracts"] > 0:
-		score_publi += 100 * min(log10(author["abstracts"]), 4)
-	# Score affiliation in [0, 500]
+		score_publi += 80 * min(log10(author["abstracts"]), 4)
 	if "current_institution" in author:
 		score_inst = 400 if author["current_institution"] in TOP_INSTITS else 200
 		if "logo_urls" in author and len(author["logo_urls"]) > 0:
 			score_inst += 100
 	else:
 		score_inst = 0
-	# Score profile pic in [0, 150]
 	score_pic = 150 if "pic_urls" in author and len(author["pic_urls"]) > 0 else 0
-	# Score specialties in [0, 150]
+	score_specs = 50 * min(len(AUTHOR_SPECIALTIES[name_hash]), 3)
+	score = score_publi + score_inst + score_pic + score_specs
+	if name_hash in TOP_AUTHORS:
+		score *= 2
+	return score
+
+def existing_author_influence(pub_id_count, abstracts, inst, logo_urls, pic_urls, name_hash):
+	score_publi = 40 * min(log10(pub_id_count), 4)
+	if abstracts > 0:
+		score_publi += 80 * min(log10(abstracts), 4)
+	if inst:
+		score_inst = 400 if inst in TOP_INSTITS else 200
+		if logo_urls:
+			score_inst += 100
+	else:
+		score_inst = 0
+	score_pic = 150 if pic_urls else 0
 	score_specs = 50 * min(len(AUTHOR_SPECIALTIES[name_hash]), 3)
 	score = score_publi + score_inst + score_pic + score_specs
 	if name_hash in TOP_AUTHORS:
@@ -1051,8 +1074,8 @@ def index_existing_author(publi, pub_tuple, has_abstract, author, aid_by_hash, f
 	old_author = obj["_source"]
 	if full_name not in old_author["aliases"]:
 		upd_author["aliases"] = old_author["aliases"] + [full_name]
-		upd_author["best_name"] = best_name_variant(upd_author["aliases"])
-		logging.debug("Picked best variant {} among {}".format(upd_author["best_name"], upd_author["aliases"]))
+		upd_author["full_name"] = best_name_variant(upd_author["aliases"])
+		logging.debug("Picked best variant {} among {}".format(upd_author["full_name"], upd_author["aliases"]))
 	if "institution" in author:
 		inst = author["institution"]
 		upd_author["institutions"] = inst + " " + old_author["institutions"]
@@ -1085,7 +1108,13 @@ def index_existing_author(publi, pub_tuple, has_abstract, author, aid_by_hash, f
 		"coauthor_name": coauthor_names[name_hash] if name_hash in coauthor_names else all_name_hashes[name_hash], 
 		"coauthor_hash": name_hash, 
 		"copublications": copublis } for name_hash, copublis in coauthor_counts.items()])
-	upd_author["influence"] = author_influence(upd_author, name_hash)
+	upd_author["influence"] = existing_author_influence(
+		len(upd_author["pub_ids"]), 
+		upd_author["abstracts"] if "abstracts" in upd_author else old_author["abstracts"], 
+		upd_author["current_institution"] if "current_institution" in upd_author else (author["institution"] if "institution" in author else None), 
+		"logo_urls" in upd_author and len(upd_author["logo_urls"]) > 0, 
+		"pic_urls" in old_author and len(old_author["pic_urls"]) > 0,
+		name_hash)
 	# TODO see if abstracts can fit in
 	resp = ES.update(index=ES_INDEX_AUTHOR, id=aid, body={ "doc": upd_author })
 
@@ -1094,8 +1123,7 @@ def index_existing_author(publi, pub_tuple, has_abstract, author, aid_by_hash, f
 	along with their homepage.
 '''
 def crawl_profile_pic(full_name, name_hash):
-	return CRAWL_IMAGES and name_hash in TOP_AUTHORS
-	# return CRAWL_IMAGES and metric_full_token_count(full_name) > 1
+	return CRAWL_AUTHOR_PICS and name_hash in TOP_AUTHORS
 
 '''
 	Indexing method used for a publication author who is not yet in the authors index.
@@ -1113,7 +1141,6 @@ def index_new_author(publi, pub_tuple, has_abstract, pub_date, author, aid_by_ha
 		"titles": publi["title"] if "title" in publi else "",
 		"pub_ids": [pub_tuple],
 		"abstracts": 1 if has_abstract else 0
-		# TODO see if they fit "abstracts": publi["abstracts"]
 	}
 	if "institution" in author:
 		inst = author["institution"]
@@ -1126,22 +1153,22 @@ def index_new_author(publi, pub_tuple, has_abstract, pub_date, author, aid_by_ha
 		if len(home_url) > 0:
 			obj["home_url"] = home_url
 	if crawl_profile_pic(full_name, name_hash):
-		if full_name.strip() == "Gilbert  Cette":
+		if full_name.endswith("Cette"):
 			img_urls = [
 			"https://pbs.twimg.com/profile_images/1108312614856261632/efYSqPkI_400x400.jpg", 
 			"https://cdn-s-www.vosgesmatin.fr/images/2FFF1136-D68D-496F-9322-F1434F3D36A1/NW_raw/gilbert-cette-photo-dr-1546109637.jpg"]
-		elif full_name.strip() == "Thomas  Philippon":
+		elif full_name.endswith("Philippon"):
 			img_urls = [
 			"https://www.lopinion.fr/sites/nb.com/files/styles/w_838/public/images/2019/12/thomas_philippon_dr.jpeg?itok=03QTaEze"]
 		else:
 			img_urls = list(image_crawl.yield_image_urls([full_name], max_images=5))
-		if CHECK_FACE_PICTURES:
-			face_urls = list([img_url for img_url in img_urls if image_analysis.face_count(img_url) == 1])
-			logging.debug("{} out of {} pictures scraped for {} were a portrait".format(len(face_urls), len(img_urls), full_name))
-			if len(face_urls) > 0:
-				obj["pic_urls"] = face_urls
-		else:
-			if len(img_urls) > 0:
+		if len(img_urls) > 0:
+			if CHECK_FACE_PICTURES:
+				face_urls = list([img_url for img_url in img_urls if image_analysis.face_count(img_url) == 1])
+				logging.debug("{} out of {} pictures scraped for {} were a portrait".format(len(face_urls), len(img_urls), full_name))
+				if len(face_urls) > 0:
+					obj["pic_urls"] = face_urls if len(face_urls) > 0 else img_urls
+			else:
 				obj["pic_urls"] = img_urls
 	if "jel-labels-fr" in publi:
 		for jel_label in publi["jel-labels-fr"]:
@@ -1151,7 +1178,7 @@ def index_new_author(publi, pub_tuple, has_abstract, pub_date, author, aid_by_ha
 		"coauthor_name": other_full_name, 
 		"coauthor_hash": other_name_hash, 
 		"copublications": 1 } for other_name_hash, other_full_name in all_name_hashes.items() if other_name_hash != name_hash])
-	obj["influence"] = author_influence(obj, name_hash)
+	obj["influence"] = new_author_influence(obj, name_hash)
 	resp = ES.index(index=ES_INDEX_AUTHOR, body=obj)
 	aid_by_hash[name_hash] = resp["_id"]
 	logging.debug("Saved new author: {} --> {}".format(full_name, name_hash))
@@ -1179,10 +1206,9 @@ def index_authors_from_publis():
 		pub_tuple = { "pub_id": pub_id, "pub_date": pub_date }
 		all_authors = publi["authors"]
 		all_name_hashes = dict([(hash_name(author["full_name"]), author["full_name"]) for author in all_authors])
-		# TODO simplify the following iteration
 		for author in all_authors:
 			full_name = author["full_name"]
-			name_hash = hash_name(full_name)
+			name_hash =  (full_name)
 			if not name_hash:
 				logging.error("Could not compute name hash for {}...".format(full_name, publi))
 				if "institution" in author:
@@ -1199,10 +1225,11 @@ def index_authors_from_publis():
 	ES.indices.refresh(index=ES_INDEX_AUTHOR)
 
 if __name__ == "__main__":
-	try:
-		ES.indices.delete(index=ES_INDEX_AUTHOR)
-		print("Re-creating index", ES_INDEX_AUTHOR)
-	except:
-		print("Creating index", ES_INDEX_AUTHOR)
-	ES.indices.create(index=ES_INDEX_AUTHOR, body=MAPPING_AUTHOR)
+	if RECREATE_INDEX:
+		try:
+			ES.indices.delete(index=ES_INDEX_AUTHOR)
+			print("Re-creating index", ES_INDEX_AUTHOR)
+		except:
+			print("Creating index", ES_INDEX_AUTHOR)
+		ES.indices.create(index=ES_INDEX_AUTHOR, body=MAPPING_AUTHOR)
 	index_authors_from_publis()
