@@ -13212,9 +13212,11 @@ const vm = new Vue ({
 				title: this.selectedAuthor.coauthors[i]["copublications"] + " co-publications avec " + this.selectedAuthor.coauthors[i]["coauthor_name"]})
 		}
 		component = document.getElementById('econetwork')
-		new vis.Network(component, { nodes: nodes, edges: edges }, { nodes: { shape: 'dot' } });
+		var network = new vis.Network(component, { nodes: nodes, edges: edges }, { nodes: { shape: 'dot' }, width: '600px', height: '600px' })
 		console.log("Edges   " + edges.length)
 		component.style.display = edges.length > 0 ? 'block' : 'none'
+		// n.fit()
+		setInterval(function() { network.fit() }, 1000)
       } catch (err) {
         console.error(err)
       }
