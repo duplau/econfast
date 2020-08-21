@@ -13201,15 +13201,21 @@ const vm = new Vue ({
 		else 
 			nodes = [{ id: 0, value: 16, label: this.selectedAuthor.full_name, title: this.selectedAuthor.full_name }]
 		for(i = 0; i < this.selectedAuthor.coauthors.length; i++) {
-			nodes.push({id: i+1,  value: 10,  label: this.selectedAuthor.coauthors[i]["coauthor_name"], title: this.selectedAuthor.coauthors[i]["coauthor_name"] })
+			if(this.selectedAuthor.coauthors[i]["coauthor_name"] != this.selectedAuthor.full_name 
+				&& this.selectedAuthor.aliases.indexOf(this.selectedAuthor.coauthors[i]["coauthor_name"]) < 0) {
+				nodes.push({id: i+1,  value: 10,  label: this.selectedAuthor.coauthors[i]["coauthor_name"], title: this.selectedAuthor.coauthors[i]["coauthor_name"] })
+			}
 		}
 		edges = []
 		for(i = 0; i < this.selectedAuthor.coauthors.length; i++) {
-			edges.push({
-				from: 0, 
-				to: i+1,  
-				value: this.selectedAuthor.coauthors[i]["copublications"],  
-				title: this.selectedAuthor.coauthors[i]["copublications"] + " co-publications avec " + this.selectedAuthor.coauthors[i]["coauthor_name"]})
+			if(this.selectedAuthor.coauthors[i]["coauthor_name"] != this.selectedAuthor.full_name 
+				&& this.selectedAuthor.aliases.indexOf(this.selectedAuthor.coauthors[i]["coauthor_name"]) < 0) {
+				edges.push({
+					from: 0, 
+					to: i+1,  
+					value: this.selectedAuthor.coauthors[i]["copublications"],  
+					title: this.selectedAuthor.coauthors[i]["copublications"] + " co-publications avec " + this.selectedAuthor.coauthors[i]["coauthor_name"]})
+			}
 		}
 		component = document.getElementById('econetwork')
 		var network = new vis.Network(component, { nodes: nodes, edges: edges }, { nodes: { shape: 'dot' }, width: '600px', height: '600px' })

@@ -18,9 +18,11 @@
 
 
 <nav class="navbar navbar-dark bg-dark">
-  <a class="navbar-brand" href="#"><h4 class="display-4"><img class="mr-3" src="logo_bdf.jpg" height="52" width="109" class="d-inline-block align-top">EconFast</h4></a>
+  <a class="navbar-brand" href="#"><img class="mr-3" src="logo-econfast.png" height="88" width="124" class="d-inline-block align-top"/></a>
+  <!-- <a class="navbar-brand" href="#"><img class="mr-3" src="logo-econfast.png" height="88" width="124" class="d-inline-block align-top"/></a> -->
   <span class="navbar-text">Outil développé par le Pôle Fintech-Innovation de l'ACPR dans le cadre du hackathon organisé par la BdF (DGSEI + Lab)</span>
   <a class="btn btn-primary btn-lg" href="https://github.com/duplau/econfast/blob/master/README.md" target="_blank" role="button">Documentation</a>
+  <a class="navbar-brand" href="https://www.banque-france.fr/la-banque-de-france/nous-connaitre/presentation-du-lab-banque-de-france/construisons-ensemble-la-banque-de-france-de-demain"><img class="mr-3" src="logo_bdf.jpg" height="78" width="163" class="d-inline-block align-top"/></a>
 </nav>
 
 <!-- <div class="jumbotron">
@@ -85,41 +87,45 @@
     <div v-if="selectedAuthor" ref="publiModal" class="publi-modal">
 
       <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="#"><h4 class="display-4"><img class="mr-3" src="logo-econfast.png" height="88" width="124" class="d-inline-block align-top">EconFast</h4></a>
+        <a class="navbar-brand" href="#"><img class="mr-3" src="logo-econfast.png" height="88" width="124" class="d-inline-block align-top"/></a>
         <ul class="nav nav-tabs md-tabs nav-justified primary-color" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#id_publis" role="tab">
-            <i class="fas fa-file-text pr-2"></i>Publications</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="tab" href="#id_network" role="tab">
-            <i class="fas fa-users pr-2"></i>Réseau</a>
-        </li>
-        <li v-if="!!selectedAuthor.home_url" class="nav-item">
-          <a class="nav-link" data-toggle="tab" v-bind:href="selectedAuthor.home_url" role="tab">
-            <i class="fas fa-user pr-2"></i>Profil</a>
-        </li>
-      </ul>
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#id_publis" role="tab">
+              <i class="fas fa-file-text pr-2"></i>Publications</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#id_network" role="tab">
+              <i class="fas fa-users pr-2"></i>Réseau</a>
+          </li>
+          <li v-if="!!selectedAuthor.home_url" class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="selectedAuthor.home_url" role="tab">
+              <i class="fas fa-user pr-2"></i>Profil</a>
+          </li>
+        </ul>
+        <a class="navbar-brand" href="https://www.banque-france.fr/la-banque-de-france/nous-connaitre/presentation-du-lab-banque-de-france/construisons-ensemble-la-banque-de-france-de-demain"><img class="mr-3" src="logo_bdf.jpg" height="78" width="163" class="d-inline-block align-top"/></a>
       </nav>
 
       <div class="tab-content">
 
-        <div id="id_network" class="tab-pane fade" role="tabpanel">
+        <div id="id_network" class="publi-container tab-pane fade" role="tabpanel">
           <div class="headline-row ">
-            <div class="mui--text-subhead">Co-auteurs principaux de {{ selectedAuthor.best_name ? selectedAuthor.best_name : selectedAuthor.full_name }}</div>
+            <div class="mui--text-subhead mx-auto">Co-auteurs principaux de {{ selectedAuthor.best_name ? selectedAuthor.best_name : selectedAuthor.full_name }}</div>
           </div>
           <div class="mui-divider"></div>
           <br/>
-          <div id="econetwork"></div>
+          <div id="econetwork" class="mx-auto"></div>
         </div>
 
         <div id="id_publis" class="publi-container tab-pane fade active show" role="tabpanel">
             <div class="headline-row ">
               <div class="mui--text-subhead">Publications de {{ selectedAuthor.best_name ? selectedAuthor.best_name : selectedAuthor.full_name }}</div>
               <div v-if="!!selectedAuthor.current_institution" class="mui--text-caption text-muted">{{ truncate(selectedAuthor.current_institution, 120) }}</div>
-              <div  v-if="!!selectedAuthor.home_url">
+
+              <!-- TODO remove this link Biographie (already in the nav bar) -->
+              <div v-if="!!selectedAuthor.home_url">
                 <a class="btn btn-primary mui--text-caption" v-bind:href="selectedAuthor.home_url" target="_blank">Biographie</a>
               </div>
+              
               <div class="mui--text-body2" align="right">{{ idx + 1 }}/{{ pub_count }}</div>
               <!-- <div v-if="selectedAuthor.pic_urls" align="right"><img style="max-height: 120px" v-bind:src="selectedAuthor.pic_urls[0]"/></div> -->
             </div>
