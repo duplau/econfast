@@ -66,7 +66,7 @@
           v-bind:src="hit._source.logo_urls[0]">
         <div class="card-body text-center">
           <h5 class="card-title">{{ hit._source.best_name ? hit._source.best_name : hit._source.full_name }}</h5>
-          <h5 v-if="!!hit._source.current_institution" class="card-subtitle mb-2 text-muted">{{ hit._source.current_institution }}</h5>
+          <h5 v-if="!!hit._source.current_institution" class="card-subtitle mb-2 text-muted">{{ truncate(hit._source.current_institution, 120) }}</h5>
           <h6 class="badge badge-secondary">Publications : {{ hit._source.pub_ids.length}}</h6>
         </div>
         <ul v-if="!!hit._source.show_specialites.length > 0" class="list-group list-group-flush">
@@ -85,7 +85,7 @@
       <div class="publi-container">
           <div class="headline-row ">
             <div class="mui--text-subhead">Publications de {{ selectedAuthor.best_name ? selectedAuthor.best_name : selectedAuthor.full_name }}</div>
-            <div v-if="!!selectedAuthor.current_institution" class="mui--text-caption text-muted">{{ selectedAuthor.current_institution }}</div>
+            <div v-if="!!selectedAuthor.current_institution" class="mui--text-caption text-muted">{{ truncate(selectedAuthor.current_institution, 120) }}</div>
             <div  v-if="!!selectedAuthor.home_url">
               <a class="btn btn-primary mui--text-caption" v-bind:href="selectedAuthor.home_url" target="_blank">Biographie</a>
             </div>

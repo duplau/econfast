@@ -28,9 +28,9 @@ CHECK_INST_LOGO = True
 
 ES_PORT = 9200
 
-ES_INDEX_PUBLI = 'publication'
+ES_INDEX_PUBLI = 'publication_a'
 
-ES_INDEX_AUTHOR = 'author'
+ES_INDEX_AUTHOR = 'author_a'
 
 '''
 	ES mapping used for the author index.
@@ -926,9 +926,14 @@ def hash_name(n):
 	m = remove_comma(n)
 	l = list([i.lower().strip(". ") for i in re.split(r'\.| ', m) if len(i.strip(". ")) > 0])
 	if len(l) > 0:
+		r = [l[0]]
 		for i in range(1, len(l)-1):
-			l[i] = l[i].strip()[0]
-		name_hash = " ".join(l)
+			mid = l[i].strip()
+			if len(mid) > 0:
+				r.append(mid[0])
+		if len(l) > 1:
+			r.append(l[-1])
+		name_hash = " ".join(r)
 		if any([n in name_hash.lower() for n in DUMMY_NAMES]):
 			return None
 		return name_hash
@@ -1119,11 +1124,32 @@ def index_existing_author(publi, pub_tuple, has_abstract, author, aid_by_hash, f
 	resp = ES.update(index=ES_INDEX_AUTHOR, id=aid, body={ "doc": upd_author })
 
 '''
-	This method is used to determine whether a given author should have their picture crawled, 
-	along with their homepage.
+	This method is used to determine whether a given author should have their picture crawled.
 '''
 def crawl_profile_pic(full_name, name_hash):
 	return CRAWL_AUTHOR_PICS and name_hash in TOP_AUTHORS
+
+'''
+	Actually retrieves an author's pictures.
+'''
+def fetch_pic_urls(full_name):
+	if full_name.endswith("Cette"):
+		img_urls = [
+		"https://pbs.twimg.com/profile_images/1108312614856261632/efYSqPkI_400x400.jpg", 
+		"https://cdn-s-www.vosgesmatin.fr/images/2FFF1136-D68D-496F-9322-F1434F3D36A1/NW_raw/gilbert-cette-photo-dr-1546109637.jpg"]
+	elif full_name.endswith("Philippon"):
+		img_urls = [
+		"https://www.lopinion.fr/sites/nb.com/files/styles/w_838/public/images/2019/12/thomas_philippon_dr.jpeg?itok=03QTaEze"]
+	else:
+		img_urls = list(image_crawl.yield_image_urls([full_name], max_images=5))
+	if len(img_urls) > 0:
+		if CHECK_FACE_PICTURES:
+			face_urls = list([img_url for img_url in img_urls if image_analysis.face_count(img_url) == 1])
+			logging.debug("{} out of {} pictures scraped for {} were a portrait".format(len(face_urls), len(img_urls), full_name))
+			return face_urls if len(face_urls) > 0 else img_urls
+		else:
+			return img_urls
+	return []
 
 '''
 	Indexing method used for a publication author who is not yet in the authors index.
@@ -1153,23 +1179,9 @@ def index_new_author(publi, pub_tuple, has_abstract, pub_date, author, aid_by_ha
 		if len(home_url) > 0:
 			obj["home_url"] = home_url
 	if crawl_profile_pic(full_name, name_hash):
-		if full_name.endswith("Cette"):
-			img_urls = [
-			"https://pbs.twimg.com/profile_images/1108312614856261632/efYSqPkI_400x400.jpg", 
-			"https://cdn-s-www.vosgesmatin.fr/images/2FFF1136-D68D-496F-9322-F1434F3D36A1/NW_raw/gilbert-cette-photo-dr-1546109637.jpg"]
-		elif full_name.endswith("Philippon"):
-			img_urls = [
-			"https://www.lopinion.fr/sites/nb.com/files/styles/w_838/public/images/2019/12/thomas_philippon_dr.jpeg?itok=03QTaEze"]
-		else:
-			img_urls = list(image_crawl.yield_image_urls([full_name], max_images=5))
-		if len(img_urls) > 0:
-			if CHECK_FACE_PICTURES:
-				face_urls = list([img_url for img_url in img_urls if image_analysis.face_count(img_url) == 1])
-				logging.debug("{} out of {} pictures scraped for {} were a portrait".format(len(face_urls), len(img_urls), full_name))
-				if len(face_urls) > 0:
-					obj["pic_urls"] = face_urls if len(face_urls) > 0 else img_urls
-			else:
-				obj["pic_urls"] = img_urls
+		pic_urls = fetch_pic_urls(full_name)
+		if len(pic_urls) > 0:
+			obj["pic_urls"] = pic_urls
 	if "jel-labels-fr" in publi:
 		for jel_label in publi["jel-labels-fr"]:
 			AUTHOR_SPECIALTIES[name_hash][jel_label] += 1

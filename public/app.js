@@ -13223,7 +13223,14 @@ const vm = new Vue ({
       document.body.style.overflow = 'auto'
       this.selectedAuthor = null
       this.modalOpened = false
-    } 
+    },
+    truncate(str, n) {
+	  if(str.length <= n) { return str }
+	  const subString = str.substr(0, n-1)
+	  s = subString.substr(0, n-1)
+	  i = s.lastIndexOf(" -")
+	  return i < 0 ? s : s.substr(0, i)
+	}
        
   }
 })
