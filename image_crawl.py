@@ -31,7 +31,7 @@ def yield_image_urls(phrases, pages_down=0, max_images=3):
     search_url = 'https://www.google.com/search?q=' + '+'.join(phrases) + '&source=lnms&tbm=isch&num=3'
     try:
         BROWSER[0].get(search_url)
-        time.sleep(1)
+        time.sleep(0.2)
         element = BROWSER[0].find_element_by_tag_name('body')
         if pages_down > 0:
             BROWSER[0].find_element_by_id('smb').click()
