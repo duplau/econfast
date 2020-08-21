@@ -9,9 +9,12 @@ from elasticsearch.helpers import parallel_bulk
 
 logging.basicConfig(level=logging.WARNING)
 
+# Safety flag
+RECREATE_INDEX = True
+
 ES_PORT = 9200
 
-ES_INDEX_PUBLI = 'publication_a'
+ES_INDEX_PUBLI = 'publication'
 
 '''
 	ES mapping used for the publication index.
@@ -215,14 +218,14 @@ def parse_repec_root_bulk(p):
 COMPUTE_TOP_INSTITUTIONS = False
 
 if __name__ == "__main__":
-	try:
-		ES.indices.delete(index=ES_INDEX_PUBLI)
-		print("Re-creating index", ES_INDEX_PUBLI)
-	except:
-		print("Creating index", ES_INDEX_PUBLI)
-	ES.indices.create(index=ES_INDEX_PUBLI, body=MAPPING_PUBLI)
+	if RECREATE_INDEX:
+		try:
+			ES.indices.delete(index=ES_INDEX_PUBLI)
+			print("Re-creating index", ES_INDEX_PUBLI)
+		except:
+			print("Creating index", ES_INDEX_PUBLI)
+		ES.indices.create(index=ES_INDEX_PUBLI, body=MAPPING_PUBLI)
 	parse_repec_root_bulk("./repec_data/data/")
-	print("Index created")
 	if COMPUTE_TOP_INSTITUTIONS:
 		print("Most popular institutions")
 		for k, v in INST_COUNTER.most_common(10000):
