@@ -13154,14 +13154,14 @@ const vm = new Vue ({
     noPrevResultsAvailable() {
     	return this.searchOffset <= 0
     },
-    async getPubli(pub_ids, idx, author_name) {
+    async getPubli(pub_ids, idx, aliases) {
       try {
         this.idx = idx
         this.pub_count = pub_ids.length
         const publi_id = pub_ids[idx]['pub_id']
         const response = await axios.get(`${this.baseUrl}/publi`, { params: { publi_id: publi_id } })
         res = response.data.hits.hits[0]
-        res.coauthors = res._source.authors.map(function(o) { return o.full_name}).filter(function(fn) { return fn != author_name }).join("; ")
+        res.coauthors = res._source.authors.map(function(o) { return o.full_name}).filter(function(fn) { return aliases.indexOf(fn) < 0 }).join("; ")
         res['abstract'] = res._source.abstract ? res._source.abstract 
         : "<em>Non disponible (cliquer sur le titre de la publication pour la consulter)</em>"
         return res
@@ -13176,7 +13176,7 @@ const vm = new Vue ({
       this.currentPubli = await this.getPubli(
       	this.selectedAuthor.pub_ids, 
       	Math.min(this.idx + 1, this.pub_count - 1), 
-      	this.selectedAuthor.full_name)
+      	this.selectedAuthor.aliases)
     },
     async prevPubli () {
       if(!this.selectedAuthor)
@@ -13185,7 +13185,7 @@ const vm = new Vue ({
       this.currentPubli = await this.getPubli(
       	this.selectedAuthor.pub_ids, 
       	Math.max(this.idx - 1, 0), 
-      	this.selectedAuthor.full_name)
+      	this.selectedAuthor.aliases)
     },
     async showPubliModal (searchHit) {
       try {
@@ -13194,7 +13194,7 @@ const vm = new Vue ({
         this.currentPubli = await this.getPubli(
         	this.selectedAuthor.pub_ids, 
         	0, 
-        	this.selectedAuthor.full_name)
+        	this.selectedAuthor.aliases)
         this.modalOpened = true
         if (this.selectedAuthor.pic_urls && this.selectedAuthor.pic_urls.length > 0)
         	nodes = [{ id: 0, value: 16, shape: 'image', image: this.selectedAuthor.pic_urls[0], title: this.selectedAuthor.full_name }]
