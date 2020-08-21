@@ -56,10 +56,16 @@
     </div>
     <div class="search-results" ref="searchResults">
       <div class="mui-panel card" style="width: 18rem;" v-for="hit in searchResults"  v-on:click="showPubliModal(hit)">
-        <img v-if="hit._source.pic_urls" class="mx-auto" class="card-img-top" style="max-height: 100px; max-width: 100px" v-bind:src="hit._source.pic_urls[0]">
-        <img v-if="!hit._source.pic_urls && hit._source.logo_urls" class="mx-auto" align="center" class="card-img-top" style="max-height: 100px; max-width: 100px" v-bind:src="hit._source.logo_urls[0]">
+        <img v-if="hit._source.pic_urls" 
+          class="mx-auto card-img-top rounded" 
+          style="max-height: 100px; max-width: 100px" 
+          v-bind:src="hit._source.pic_urls[0]">
+        <img v-if="!hit._source.pic_urls && hit._source.logo_urls" 
+          class="mx-auto card-img-top rounded" 
+          style="max-height: 100px; max-width: 100px" 
+          v-bind:src="hit._source.logo_urls[0]">
         <div class="card-body text-center">
-          <h5 class="card-title">{{ hit._source.full_name }}</h5>
+          <h5 class="card-title">{{ hit._source.best_name ? hit._source.best_name : hit._source.full_name }}</h5>
           <h5 v-if="!!hit._source.current_institution" class="card-subtitle mb-2 text-muted">{{ hit._source.current_institution }}</h5>
           <h6 class="badge badge-secondary">Publications : {{ hit._source.pub_ids.length}}</h6>
         </div>
@@ -78,11 +84,12 @@
     <div v-if="selectedAuthor" ref="publiModal" class="publi-modal">
       <div class="publi-container">
           <div class="headline-row ">
-            <div class="mui--text-headline">Publications de {{ selectedAuthor.full_name }}</div>
+            <div class="mui--text-subhead">Publications de {{ selectedAuthor.best_name ? selectedAuthor.best_name : selectedAuthor.full_name }}</div>
+            <div v-if="!!selectedAuthor.current_institution" class="mui--text-caption text-muted">{{ selectedAuthor.current_institution }}</div>
             <div  v-if="!!selectedAuthor.home_url">
-              <a class="btn btn-primary mui--text-body2" v-bind:href="selectedAuthor.home_url" target="_blank">Biographie</a>
+              <a class="btn btn-primary mui--text-caption" v-bind:href="selectedAuthor.home_url" target="_blank">Biographie</a>
             </div>
-            <div class="mui--text-headline" align="right">{{ idx + 1 }}/{{ pub_count }}</div>
+            <div class="mui--text-body2" align="right">{{ idx + 1 }}/{{ pub_count }}</div>
             <div id="econetwork" align="center" class="rounded-circle"></div>
             <!-- <div v-if="selectedAuthor.pic_urls" align="right"><img style="max-height: 120px" v-bind:src="selectedAuthor.pic_urls[0]"/></div> -->
           </div>
@@ -91,20 +98,17 @@
         <div v-if="currentPubli">
           <br/>
           <div class="title-row">
-            <a class="mui--text-title" align="center" v-bind:href="currentPubli._source.url" target="_blank"><strong>{{ currentPubli._source.title }}</strong></a>
+            <a class="mui--text-subhead" align="center" v-bind:href="currentPubli._source.url" target="_blank"><strong>{{ currentPubli._source.title }}</strong></a>
           </div>
           <br/>
-          <div v-if="!!currentPubli._source['creation_date']" class="mui--text-body2"><strong>Date de publication :</strong> {{ currentPubli._source["creation_date"] }}</div>
-          <div v-if="!!currentPubli._source['jel-labels-fr']" class="mui--text-body2"><strong>Catégories : </strong>{{ currentPubli._source["jel-labels-fr"].slice(0, 3).join("; ") }}</div>
-          <div v-if="!!currentPubli._source['keywords']" class="mui--text-body2"><strong>Mots-clefs : </strong>{{ currentPubli._source["keywords"].join(", ") }}</div>
-          <div v-if="!!currentPubli.coauthors" class="mui--text-body2"><strong>Co-auteurs : </strong> {{ currentPubli.coauthors }}</div>
+          <div v-if="!!currentPubli._source['creation_date']" class="mui--text-body1"><strong>Date de publication :</strong> {{ currentPubli._source["creation_date"] }}</div>
+          <div v-if="!!currentPubli._source['jel-labels-fr']" class="mui--text-body1"><strong>Catégories : </strong>{{ currentPubli._source["jel-labels-fr"].slice(0, 3).join("; ") }}</div>
+          <div v-if="!!currentPubli._source['keywords']" class="mui--text-body1"><strong>Mots-clefs : </strong>{{ currentPubli._source["keywords"].join(", ") }}</div>
+          <div v-if="!!currentPubli.coauthors" class="mui--text-body1"><strong>Co-auteurs : </strong> {{ currentPubli.coauthors }}</div>
         </div>
-        <div class="mui--text-body1">
-          <div v-if="currentPubli">
-            <div class="mui--text-body2">
-              <div align="center"><strong>Résumé</strong></div>
-              <div v-html="currentPubli.abstract"/>
-          </div>
+        <div v-if="currentPubli">
+          <div class="mui--text-body1" align="center"><strong>Résumé</strong></div>
+          <div class="mui--text-body1" v-html="currentPubli.abstract"></div>
         </div>
       </div>
       <div class="modal-footer">
